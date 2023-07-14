@@ -1,4 +1,4 @@
-package com.shukriev.merchant;
+package com.shukriev.merchantplatform;
 
 public class Main {
 	public static void main(String[] args) {
