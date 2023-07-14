@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
-@EnableJpaRepositories(basePackages = "com.shukriev.merchant.repository")
+@EnableJpaRepositories(basePackages = "com.shukriev.merchantplatform.repository")
 @ComponentScan(basePackageClasses = MerchantInfraMain.class)
 public class BeanConfig {
 

@@ -1,8 +1,8 @@
 package com.shukriev.merchantplatform.adapter;
 
 import com.shukriev.merchantplatform.MerchantInfraMain;
-import com.shukriev.merchantplatform.model.merchant.NormalMerchant;
 import com.shukriev.merchantplatform.model.merchant.ActiveInactiveStatusEnum;
+import com.shukriev.merchantplatform.model.merchant.NormalMerchant;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 @Testcontainers
 @SpringBootTest(classes = MerchantInfraMain.class)
-public class MerchantProviderTest {
+class MerchantProviderTest {
 	@Container
 	private static final PostgreSQLContainer<?> postgresqlContainer = new PostgreSQLContainer<>("postgres:11.1")
 			.withDatabaseName("test")

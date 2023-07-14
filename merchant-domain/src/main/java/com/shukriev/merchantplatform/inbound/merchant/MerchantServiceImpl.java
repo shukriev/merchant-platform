@@ -36,4 +36,15 @@ public final class MerchantServiceImpl implements MerchantService {
 	public NormalMerchant updateMerchant(NormalMerchant merchant) {
 		return merchantProvider.updateMerchant(merchant);
 	}
+
+	@Override
+	public NormalMerchant createMerchant(NormalMerchant merchant) {
+		return merchantProvider.createMerchant(merchant);
+	}
+
+	@Override
+	public boolean deleteMerchant(UUID id) {
+		//TODO Ensure you prevent a merchant from being deleted unless there are no related payment transactions
+		return merchantProvider.deleteMerchant(id);
+	}
 }

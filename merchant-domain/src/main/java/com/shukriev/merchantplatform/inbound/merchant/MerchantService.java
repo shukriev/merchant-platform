@@ -11,4 +11,8 @@ public interface MerchantService {
 	Set<NormalMerchant> getMerchants();
 
 	NormalMerchant updateMerchant(final NormalMerchant merchant);
+
+	NormalMerchant createMerchant(final NormalMerchant merchant);
+
+	boolean deleteMerchant(final UUID id);
 }

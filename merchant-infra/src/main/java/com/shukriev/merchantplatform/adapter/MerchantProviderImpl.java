@@ -40,4 +40,15 @@ public class MerchantProviderImpl implements MerchantProvider {
 	public NormalMerchant createMerchant(NormalMerchant merchant) {
 		return merchantRepository.save(merchant);
 	}
+
+	@Override
+	public boolean deleteMerchant(UUID id) {
+		try {
+			merchantRepository.deleteById(id);
+		} catch (final Exception e) {
+			//TODO Do something with the exception, at least we can log it
+			return false;
+		}
+		return true;
+	}
 }

@@ -3,8 +3,8 @@ package com.shukriev.merchantplatform.inbound;
 import com.shukriev.merchantplatform.exception.merchant.MerchantNotFoundException;
 import com.shukriev.merchantplatform.inbound.merchant.MerchantService;
 import com.shukriev.merchantplatform.inbound.merchant.MerchantServiceImpl;
-import com.shukriev.merchantplatform.model.merchant.NormalMerchant;
 import com.shukriev.merchantplatform.model.merchant.ActiveInactiveStatusEnum;
+import com.shukriev.merchantplatform.model.merchant.NormalMerchant;
 import com.shukriev.merchantplatform.outbound.merchant.MerchantProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -93,5 +93,31 @@ class MerchantServiceTest {
 		// when
 		final var updatedMerchant = merchantService.updateMerchant(merchant);
 		Assertions.assertEquals(merchant, updatedMerchant);
+	}
+
+	@Test
+	void shouldCreateMerchantSuccessfullyTest() {
+		final var merchant = new NormalMerchant(
+				"some@mail.com",
+				"some_name_updated",
+				"some_password",
+				ActiveInactiveStatusEnum.ACTIVE,
+				"some_description",
+				1.0d);
+		// given
+		when(merchantProvider.createMerchant(merchant)).thenReturn(merchant);
+		// when
+		final var updatedMerchant = merchantService.createMerchant(merchant);
+		Assertions.assertEquals(merchant, updatedMerchant);
+	}
+
+	@Test
+	void shouldDeleteMerchantSuccessfullyTest() {
+		// given
+		final var uuid = UUID.randomUUID();
+		when(merchantProvider.deleteMerchant(uuid)).thenReturn(true);
+		// when
+		final var isMerchantDeleted = merchantService.deleteMerchant(uuid);
+		Assertions.assertTrue(isMerchantDeleted);
 	}
 }

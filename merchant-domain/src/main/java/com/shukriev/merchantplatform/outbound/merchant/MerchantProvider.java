@@ -19,4 +19,6 @@ public interface MerchantProvider {
 
 	@NotNull
 	NormalMerchant createMerchant(final NormalMerchant merchant);
+
+	boolean deleteMerchant(final UUID id);
 }
