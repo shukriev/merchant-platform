@@ -4,6 +4,7 @@ import com.shukriev.merchantplatform.model.merchant.NormalMerchant;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -69,5 +70,17 @@ public abstract class Transaction {
 
 	public Transaction getReference() {
 		return reference;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Transaction that)) return false;
+		return Objects.equals(id, that.id) && Objects.equals(merchant, that.merchant) && Objects.equals(amount, that.amount) && status == that.status && Objects.equals(customerEmail, that.customerEmail) && Objects.equals(customerPhone, that.customerPhone) && Objects.equals(reference, that.reference);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, merchant, amount, status, customerEmail, customerPhone, reference);
 	}
 }
