@@ -5,11 +5,17 @@ import com.shukriev.merchantplatform.model.merchant.NormalMerchant;
 import com.shukriev.merchantplatform.model.transaction.AuthorizeTransaction;
 import com.shukriev.merchantplatform.model.transaction.Transaction;
 import com.shukriev.merchantplatform.model.transaction.TransactionStatusEnum;
+import org.junit.jupiter.api.AfterEach;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.text.MessageFormat;
+import java.util.List;
 
 @Testcontainers
 public class MerchantPlatformIntegrationTest {
@@ -24,6 +30,29 @@ public class MerchantPlatformIntegrationTest {
 		registry.add("spring.datasource.url", postgresqlContainer::getJdbcUrl);
 		registry.add("spring.datasource.username", postgresqlContainer::getUsername);
 		registry.add("spring.datasource.password", postgresqlContainer::getPassword);
+	}
+
+	@AfterEach
+	void afterEach() throws SQLException {
+		final var jdbcUrl = postgresqlContainer.getJdbcUrl();
+		final var username = postgresqlContainer.getUsername();
+		final var password = postgresqlContainer.getPassword();
+
+		try (final var connection = DriverManager.getConnection(jdbcUrl, username, password);
+			 final var statement = connection.createStatement()) {
+			final var tablesToTruncate = List.of("merchant", "transaction");
+			tablesToTruncate
+					.forEach(tableName -> {
+						try {
+							statement.executeUpdate(MessageFormat.format("TRUNCATE TABLE {0} CASCADE", tableName));
+						} catch (SQLException e) {
+							throw new RuntimeException(e);
+						}
+					});
+		} catch (SQLException e) {
+			// Handle any exceptions that occur during cleanup
+			e.printStackTrace();
+		}
 	}
 
 	public static class MerchantData {
