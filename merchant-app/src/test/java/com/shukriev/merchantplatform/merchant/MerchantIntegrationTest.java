@@ -154,5 +154,6 @@ class MerchantIntegrationTest extends MerchantPlatformIntegrationTest {
 		Assertions.assertEquals(200, response.getStatusCode());
 	}
 
-	//TODO Implement some more bad test case scenarios
+	// TODO Implement some more bad test case scenarios
+	// Failure during createTransaction due to inactive merchant
 }
