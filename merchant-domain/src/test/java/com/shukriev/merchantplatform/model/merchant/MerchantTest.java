@@ -1,5 +1,6 @@
 package com.shukriev.merchantplatform.model.merchant;
 
+import com.shukriev.merchantplatform.common.MerchantData;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -23,14 +24,7 @@ class MerchantTest {
 	@Test
 	void shouldBeValidMerchantTest() {
 		// given
-		final NormalMerchant merchant = new NormalMerchant(
-				"some@mail.com",
-				"some_name",
-				"some_password",
-				ActiveInactiveStatusEnum.ACTIVE,
-				"some_description",
-				1.0d
-		);
+		final NormalMerchant merchant = MerchantData.merchant;
 		// when
 		final Set<ConstraintViolation<NormalMerchant>> violations = validator.validate(merchant);
 		// then
@@ -40,14 +34,7 @@ class MerchantTest {
 	@Test
 	void shouldFailDueToBadEmailTest() {
 		// given
-		final NormalMerchant merchant = new NormalMerchant(
-				"some@mail.",
-				"some_name",
-				"some_password",
-				ActiveInactiveStatusEnum.ACTIVE,
-				"some_description",
-				1.0d
-		);
+		final NormalMerchant merchant = MerchantData.merchant;
 		// when
 		final Set<ConstraintViolation<NormalMerchant>> violations = validator.validate(merchant);
 		// then
@@ -58,14 +45,7 @@ class MerchantTest {
 	@Test
 	void shouldFailDueToBadTotalTransactionSumTest() {
 		// given
-		final NormalMerchant merchant = new NormalMerchant(
-				"some@mail.com",
-				"some_name",
-				"some_password",
-				ActiveInactiveStatusEnum.ACTIVE,
-				"some_description",
-				-1.0d
-		);
+		final NormalMerchant merchant = MerchantData.merchant;
 
 		// when
 		final Set<ConstraintViolation<NormalMerchant>> violations = validator.validate(merchant);

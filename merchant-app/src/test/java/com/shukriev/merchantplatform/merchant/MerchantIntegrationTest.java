@@ -1,67 +1,24 @@
-package com.shukriev.merchantplatform;
+package com.shukriev.merchantplatform.merchant;
 
+import com.shukriev.merchantplatform.common.MerchantPlatformIntegrationTest;
 import com.shukriev.merchantplatform.inbound.merchant.MerchantService;
 import com.shukriev.merchantplatform.model.merchant.ActiveInactiveStatusEnum;
 import com.shukriev.merchantplatform.model.merchant.NormalMerchant;
-import io.restassured.RestAssured;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.UUID;
 
+import static com.shukriev.merchantplatform.common.MerchantPlatformIntegrationTest.MerchantData.merchant;
 import static io.restassured.RestAssured.given;
 
-@Testcontainers
-@ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = {MerchantPlatformApplication.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class MerchantIntegrationTest {
-	@LocalServerPort
-	int port;
-
-	@BeforeEach
-	public void setUp() {
-		RestAssured.port = port;
-	}
-
+class MerchantIntegrationTest extends MerchantPlatformIntegrationTest {
 	@Autowired
 	private MerchantService merchantService;
 
-	@Container
-	private static final PostgreSQLContainer<?> postgresqlContainer = new PostgreSQLContainer<>("postgres:11.1")
-			.withDatabaseName("test")
-			.withUsername("sa")
-			.withPassword("sa");
-
-	@DynamicPropertySource
-	private static void setProperties(DynamicPropertyRegistry registry) {
-		registry.add("spring.datasource.url", postgresqlContainer::getJdbcUrl);
-		registry.add("spring.datasource.username", postgresqlContainer::getUsername);
-		registry.add("spring.datasource.password", postgresqlContainer::getPassword);
-	}
-
 	@Test
 	void shouldReturnMerchantsSuccessfullyTest() {
-		//TODO extract to common together with the PG Container Configuration
-		final var merchant = new NormalMerchant(
-				"some@mail.com",
-				"some_name",
-				"some_password",
-				ActiveInactiveStatusEnum.ACTIVE,
-				"some_description",
-				1.0d
-		);
-
 		merchantService.createMerchant(merchant);
 
 		//when
@@ -89,16 +46,6 @@ class MerchantIntegrationTest {
 
 	@Test
 	void shouldReturnMerchantByIdSuccessfullyTest() {
-		//TODO extract to common together with the PG Container Configuration
-		final var merchant = new NormalMerchant(
-				"some@mail.com",
-				"some_name",
-				"some_password",
-				ActiveInactiveStatusEnum.ACTIVE,
-				"some_description",
-				1.0d
-		);
-
 		final var createdMerchant = merchantService.createMerchant(merchant);
 
 		//when
@@ -134,16 +81,6 @@ class MerchantIntegrationTest {
 
 	@Test
 	void shouldReturnUpdatedMerchantSuccessfullyTest() {
-		//TODO extract to common together with the PG Container Configuration
-		final var merchant = new NormalMerchant(
-				"some@mail.com",
-				"some_name",
-				"some_password",
-				ActiveInactiveStatusEnum.ACTIVE,
-				"some_description",
-				1.0d
-		);
-
 		final var createdMerchant = merchantService.createMerchant(merchant);
 
 		final var merchantToBeUpdated = new NormalMerchant(
@@ -174,16 +111,6 @@ class MerchantIntegrationTest {
 
 	@Test
 	void shouldFailUpdatedMerchantDueToNonMatchingTest() {
-		//TODO extract to common together with the PG Container Configuration
-		final var merchant = new NormalMerchant(
-				"some@mail.com",
-				"some_name",
-				"some_password",
-				ActiveInactiveStatusEnum.ACTIVE,
-				"some_description",
-				1.0d
-		);
-
 		final var createdMerchant = merchantService.createMerchant(merchant);
 
 		final var merchantToBeUpdated = new NormalMerchant(
@@ -213,16 +140,6 @@ class MerchantIntegrationTest {
 
 	@Test
 	void shouldDeleteMerchantSuccessfullyTest() {
-		//TODO extract to common together with the PG Container Configuration
-		final var merchant = new NormalMerchant(
-				"some@mail.com",
-				"some_name",
-				"some_password",
-				ActiveInactiveStatusEnum.ACTIVE,
-				"some_description",
-				1.0d
-		);
-
 		final var createdMerchant = merchantService.createMerchant(merchant);
 
 		//when
@@ -237,5 +154,6 @@ class MerchantIntegrationTest {
 		Assertions.assertEquals(200, response.getStatusCode());
 	}
 
-	//TODO Implement some more bad test case scenarios
+	// TODO Implement some more bad test case scenarios
+	// Failure during createTransaction due to inactive merchant
 }

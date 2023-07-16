@@ -1,8 +1,6 @@
-package com.shukriev.merchantplatform.inbound;
+package com.shukriev.merchantplatform.inbound.merchant;
 
 import com.shukriev.merchantplatform.exception.merchant.MerchantNotFoundException;
-import com.shukriev.merchantplatform.inbound.merchant.MerchantService;
-import com.shukriev.merchantplatform.inbound.merchant.MerchantServiceImpl;
 import com.shukriev.merchantplatform.model.merchant.ActiveInactiveStatusEnum;
 import com.shukriev.merchantplatform.model.merchant.NormalMerchant;
 import com.shukriev.merchantplatform.outbound.merchant.MerchantProvider;
