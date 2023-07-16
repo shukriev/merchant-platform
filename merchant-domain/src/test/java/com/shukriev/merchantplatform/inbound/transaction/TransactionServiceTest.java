@@ -143,7 +143,7 @@ public class TransactionServiceTest {
 				null);
 
 		// given
-		when(transactionProvider.updateMerchant(transaction)).thenReturn(transaction);
+		when(transactionProvider.updateTransaction(transaction)).thenReturn(transaction);
 		// when
 		final var result = transactionService.updateTransaction(transaction);
 		// then

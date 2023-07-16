@@ -43,6 +43,14 @@
             <artifactId>jakarta.el</artifactId>
             <version>${jakarta.el.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
 
         <!-- Test Dependencies -->
         <dependency>

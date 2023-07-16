@@ -1,4 +1,4 @@
-package com.shukriev.merchantplatform.repository.postgres;
+package com.shukriev.merchantplatform.repository.postgres.merchant;
 
 import com.shukriev.merchantplatform.model.merchant.NormalMerchant;
 import org.springframework.data.repository.CrudRepository;

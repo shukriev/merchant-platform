@@ -26,12 +26,13 @@ public final class NormalMerchant extends Merchant {
 
 	/**
 	 * The following constructor is created for testing only purpose
-	 * @param id - id
-	 * @param email - email
-	 * @param name - name
-	 * @param password - password
-	 * @param status - status
-	 * @param description - description
+	 *
+	 * @param id                  - id
+	 * @param email               - email
+	 * @param name                - name
+	 * @param password            - password
+	 * @param status              - status
+	 * @param description         - description
 	 * @param totalTransactionSum - totalTransactionSum
 	 */
 	public NormalMerchant(UUID id, String email, String name, String password, ActiveInactiveStatusEnum status, String description, Double totalTransactionSum) {

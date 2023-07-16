@@ -28,7 +28,7 @@ public final class TransactionServiceImpl implements TransactionService {
 
 	@Override
 	public Transaction updateTransaction(Transaction transaction) {
-		return transactionProvider.updateMerchant(transaction);
+		return transactionProvider.updateTransaction(transaction);
 	}
 
 	@Override

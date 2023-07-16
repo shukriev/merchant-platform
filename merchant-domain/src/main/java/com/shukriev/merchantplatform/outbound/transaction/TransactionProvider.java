@@ -15,7 +15,7 @@ public interface TransactionProvider {
 	Set<Transaction> getMerchantTransactions(final UUID merchantId);
 
 	@NotNull
-	Transaction updateMerchant(final Transaction transaction);
+	Transaction updateTransaction(final Transaction transaction);
 
 	@NotNull
 	Transaction createTransaction(final Transaction transaction);

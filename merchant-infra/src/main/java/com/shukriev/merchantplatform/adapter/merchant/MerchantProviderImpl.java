@@ -1,8 +1,8 @@
-package com.shukriev.merchantplatform.adapter;
+package com.shukriev.merchantplatform.adapter.merchant;
 
 import com.shukriev.merchantplatform.model.merchant.NormalMerchant;
 import com.shukriev.merchantplatform.outbound.merchant.MerchantProvider;
-import com.shukriev.merchantplatform.repository.postgres.MerchantRepository;
+import com.shukriev.merchantplatform.repository.postgres.merchant.MerchantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

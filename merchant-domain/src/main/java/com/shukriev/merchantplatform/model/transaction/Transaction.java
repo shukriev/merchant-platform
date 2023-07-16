@@ -13,9 +13,9 @@ import java.util.UUID;
 public abstract class Transaction {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
-	@org.hibernate.validator.constraints.UUID
+	//TODO add UUID validator
 	private UUID id;
-	@OneToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "merchant_id")
 	private NormalMerchant merchant;
 	@DecimalMin(value = "0", inclusive = false, message = "The amount must be larger than 0")
@@ -72,6 +72,13 @@ public abstract class Transaction {
 		return reference;
 	}
 
+	public String getTransactionType() {
+		final var discriminatorValue = getClass().getAnnotation(DiscriminatorValue.class);
+		if (discriminatorValue != null) {
+			return discriminatorValue.value();
+		}
+		return null;
+	}
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
