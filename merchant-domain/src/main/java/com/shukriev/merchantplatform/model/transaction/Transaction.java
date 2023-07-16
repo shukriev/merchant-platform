@@ -17,6 +17,7 @@ public abstract class Transaction {
 	private UUID id;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "merchant_id")
+	@NotNull(message = "Transaction Merchant is required")
 	private NormalMerchant merchant;
 	@DecimalMin(value = "0", inclusive = false, message = "The amount must be larger than 0")
 	private Double amount;

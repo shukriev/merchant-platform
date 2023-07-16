@@ -1,5 +1,6 @@
 package com.shukriev.merchantplatform.model.transaction;
 
+import com.shukriev.merchantplatform.common.MerchantData;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -27,7 +28,7 @@ class TransactionModelTest {
 		return List.of(
 				new AuthorizeTransaction(
 						null, // Uuid
-						null, // Merchant
+						MerchantData.merchant, // Merchant
 						10.0, // Amount
 						TransactionStatusEnum.APPROVED, // Status
 						"some@email.com", // CustomerEmail
@@ -35,7 +36,7 @@ class TransactionModelTest {
 						null), // TransactionReference
 				new ChargeTransaction(
 						null,
-						null,
+						MerchantData.merchant,
 						10.0,
 						TransactionStatusEnum.APPROVED,
 						"some@email.com",
@@ -43,7 +44,7 @@ class TransactionModelTest {
 						null),
 				new RefundTransaction(
 						null,
-						null,
+						MerchantData.merchant,
 						10.0,
 						TransactionStatusEnum.APPROVED,
 						"some@email.com",
@@ -51,7 +52,7 @@ class TransactionModelTest {
 						null),
 				new ReversalTransaction(
 						null,
-						null,
+						MerchantData.merchant,
 						10.0,
 						TransactionStatusEnum.APPROVED,
 						"some@email.com",
@@ -74,7 +75,7 @@ class TransactionModelTest {
 		// given
 		final var transaction = new AuthorizeTransaction(
 				null,
-				null,
+				MerchantData.merchant,
 				10.0, // Amount
 				TransactionStatusEnum.APPROVED,
 				"someBadEmail", // Bad Email
@@ -86,5 +87,24 @@ class TransactionModelTest {
 		Assertions.assertEquals(2, violations.size());
 		Assertions.assertEquals("Wrong country code provided. It has to be +359 or starting with 0", violations.get(0).getMessage());
 		Assertions.assertEquals("Invalid customer email address", violations.get(1).getMessage());
+	}
+
+
+	@Test
+	void shouldBeInvalidTransactionDueToNullMerchantTest() {
+		// given
+		final var transaction = new AuthorizeTransaction(
+				null,
+				null, // Bad Merchant
+				10.0,
+				TransactionStatusEnum.APPROVED,
+				"email@email.com",
+				"+359123123123",
+				null);
+		// when
+		final List<ConstraintViolation<AuthorizeTransaction>> violations = validator.validate(transaction).stream().toList();
+		// then
+		Assertions.assertEquals(1, violations.size());
+		Assertions.assertEquals("Transaction Merchant is required", violations.get(0).getMessage());
 	}
 }

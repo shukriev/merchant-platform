@@ -1,8 +1,9 @@
 package com.shukriev.merchantplatform.inbound.transaction;
 
+import com.shukriev.merchantplatform.common.MerchantData;
+import com.shukriev.merchantplatform.common.TransactionData;
+import com.shukriev.merchantplatform.exception.merchant.MerchantInactiveException;
 import com.shukriev.merchantplatform.exception.transaction.TransactionNotFoundException;
-import com.shukriev.merchantplatform.model.merchant.ActiveInactiveStatusEnum;
-import com.shukriev.merchantplatform.model.merchant.NormalMerchant;
 import com.shukriev.merchantplatform.model.transaction.AuthorizeTransaction;
 import com.shukriev.merchantplatform.model.transaction.TransactionStatusEnum;
 import com.shukriev.merchantplatform.outbound.transaction.TransactionProvider;
@@ -33,27 +34,12 @@ public class TransactionServiceTest {
 
 	@Test
 	void shouldReturnValidAuthorizeTransactionByIdTest() {
-		final var transactionId = UUID.randomUUID();
-		final var transaction = new AuthorizeTransaction(
-				transactionId,
-				new NormalMerchant(
-						"some@mail.com",
-						"some_name",
-						"some_password",
-						ActiveInactiveStatusEnum.ACTIVE,
-						"some_description",
-						1.0d
-				),
-				10.0,
-				TransactionStatusEnum.APPROVED,
-				"some@email.com",
-				"+359123123123",
-				null);
-
 		// given
-		when(transactionProvider.getById(transactionId)).thenReturn(Optional.of(transaction));
+		final var transaction = TransactionData.transaction;
+		when(transactionProvider.getById(transaction.getId())).thenReturn(Optional.of(transaction));
+
 		// when
-		final var result = transactionService.getById(transactionId);
+		final var result = transactionService.getById(transaction.getId());
 		// then
 		Assertions.assertEquals(transaction, result);
 	}
@@ -70,22 +56,7 @@ public class TransactionServiceTest {
 	@Test
 	void shouldReturnMerchantTransactionsTransactionByIdTest() {
 		final var merchantId = UUID.randomUUID();
-		final var transaction = new AuthorizeTransaction(
-				null,
-				new NormalMerchant(
-						merchantId,
-						"some@mail.com",
-						"some_name",
-						"some_password",
-						ActiveInactiveStatusEnum.ACTIVE,
-						"some_description",
-						1.0d
-				),
-				10.0,
-				TransactionStatusEnum.APPROVED,
-				"some@email.com",
-				"+359123123123",
-				null);
+		final var transaction = TransactionData.transaction;
 
 		// given
 		when(transactionProvider.getMerchantTransactions(merchantId)).thenReturn(Set.of(transaction));
@@ -98,25 +69,10 @@ public class TransactionServiceTest {
 
 	@Test
 	void shouldCreateTransactionSuccessfullyTest() {
-		final var transaction = new AuthorizeTransaction(
-				UUID.randomUUID(),
-				new NormalMerchant(
-						UUID.randomUUID(),
-						"some@mail.com",
-						"some_name",
-						"some_password",
-						ActiveInactiveStatusEnum.ACTIVE,
-						"some_description",
-						1.0d
-				),
-				10.0,
-				TransactionStatusEnum.APPROVED,
-				"some@email.com",
-				"+359123123123",
-				null);
-
 		// given
+		final var transaction = TransactionData.transaction;
 		when(transactionProvider.createTransaction(transaction)).thenReturn(transaction);
+
 		// when
 		final var result = transactionService.createTransaction(transaction);
 		// then
@@ -124,25 +80,25 @@ public class TransactionServiceTest {
 	}
 
 	@Test
-	void shouldUpdateTransactionSuccessfullyTest() {
+	void shouldFailToCreateTransactionDueToInactiveMerchantTest() {
+		// given
 		final var transaction = new AuthorizeTransaction(
 				UUID.randomUUID(),
-				new NormalMerchant(
-						UUID.randomUUID(),
-						"some@mail.com",
-						"some_name",
-						"some_password",
-						ActiveInactiveStatusEnum.ACTIVE,
-						"some_description",
-						1.0d
-				),
+				MerchantData.inactiveMerchant,
 				10.0,
 				TransactionStatusEnum.APPROVED,
 				"some@email.com",
 				"+359123123123",
 				null);
 
+		// when - then
+		Assertions.assertThrows(MerchantInactiveException.class, () -> transactionService.createTransaction(transaction));
+	}
+
+	@Test
+	void shouldUpdateTransactionSuccessfullyTest() {
 		// given
+		final var transaction = TransactionData.transaction;
 		when(transactionProvider.updateTransaction(transaction)).thenReturn(transaction);
 		// when
 		final var result = transactionService.updateTransaction(transaction);
