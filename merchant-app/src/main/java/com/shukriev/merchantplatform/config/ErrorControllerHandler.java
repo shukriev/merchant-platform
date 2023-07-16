@@ -21,4 +21,11 @@ public class ErrorControllerHandler {
 				.badRequest()
 				.body(exception.getMessage());
 	}
+
+	@ExceptionHandler(IllegalArgumentException.class)
+	public ResponseEntity<String> illegalArgumentException(final IllegalArgumentException exception) {
+		return ResponseEntity
+				.badRequest()
+				.body(exception.getMessage());
+	}
 }
