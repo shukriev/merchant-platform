@@ -6,6 +6,7 @@ import com.shukriev.merchantplatform.repository.postgres.transaction.Transaction
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -47,5 +48,10 @@ public class TransactionProviderImpl implements TransactionProvider {
 	@Override
 	public Transaction createTransaction(Transaction transaction) {
 		return transactionRepository.save(transaction);
+	}
+
+	@Override
+	public void deleteByTimestampBefore(LocalDateTime dateTime) {
+		transactionRepository.deleteByCreatedAtBefore(dateTime);
 	}
 }

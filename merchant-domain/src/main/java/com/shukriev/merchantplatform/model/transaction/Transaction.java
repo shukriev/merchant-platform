@@ -4,6 +4,7 @@ import com.shukriev.merchantplatform.model.merchant.NormalMerchant;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -32,9 +33,16 @@ public abstract class Transaction {
 	@JoinColumn(name = "reference_id")
 	private Transaction reference;
 
+	private LocalDateTime createdAt;
+
 	public abstract void validateReferenceTransaction();
 
 	public abstract Transaction updateStatus(final TransactionStatusEnum status);
+
+	@PrePersist
+	private void prePersist() {
+		this.createdAt = LocalDateTime.now();
+	}
 
 	protected Transaction() {
 	}
@@ -84,6 +92,7 @@ public abstract class Transaction {
 		}
 		return null;
 	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;

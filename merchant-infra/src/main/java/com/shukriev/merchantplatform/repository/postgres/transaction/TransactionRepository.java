@@ -9,10 +9,15 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
 public interface TransactionRepository extends CrudRepository<Transaction, UUID> {
+	@Transactional
+	@Modifying
+	@Query("delete from Transaction t where t.createdAt < ?1")
+	void deleteByCreatedAtBefore(LocalDateTime createdAt);
 	@Transactional
 	@Modifying
 	@Query("""

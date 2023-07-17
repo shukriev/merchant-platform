@@ -3,6 +3,7 @@ package com.shukriev.merchantplatform.outbound.transaction;
 import com.shukriev.merchantplatform.model.transaction.Transaction;
 import jakarta.validation.constraints.NotNull;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -19,4 +20,6 @@ public interface TransactionProvider {
 
 	@NotNull
 	Transaction createTransaction(final Transaction transaction);
+
+	void deleteByTimestampBefore(LocalDateTime dateTime);
 }
