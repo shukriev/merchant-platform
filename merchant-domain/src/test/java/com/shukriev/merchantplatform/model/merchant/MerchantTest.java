@@ -34,7 +34,7 @@ class MerchantTest {
 	@Test
 	void shouldFailDueToBadEmailTest() {
 		// given
-		final NormalMerchant merchant = MerchantData.merchant;
+		final NormalMerchant merchant = MerchantData.badMerchantWithWrongEmail;
 		// when
 		final Set<ConstraintViolation<NormalMerchant>> violations = validator.validate(merchant);
 		// then
@@ -45,7 +45,7 @@ class MerchantTest {
 	@Test
 	void shouldFailDueToBadTotalTransactionSumTest() {
 		// given
-		final NormalMerchant merchant = MerchantData.merchant;
+		final NormalMerchant merchant = MerchantData.badMerchantWithWrongTransactionSum;
 
 		// when
 		final Set<ConstraintViolation<NormalMerchant>> violations = validator.validate(merchant);

@@ -11,12 +11,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.text.MessageFormat;
+import java.util.List;
 
 @Testcontainers
 @ExtendWith(SpringExtension.class)
@@ -26,22 +28,36 @@ public class MerchantPlatformIntegrationTest {
 	@LocalServerPort
 	int port;
 
+	protected void cleanDatabase(PostgreSQLContainer<?> postgresqlContainer) {
+		final var jdbcUrl = postgresqlContainer.getJdbcUrl();
+		final var username = postgresqlContainer.getUsername();
+		final var password = postgresqlContainer.getPassword();
+
+		try (final var connection = DriverManager.getConnection(jdbcUrl, username, password);
+			 final var statement = connection.createStatement()) {
+			final var tablesToTruncate = List.of("merchant", "transaction");
+			tablesToTruncate
+					.forEach(tableName -> {
+						try {
+							final var checkIfExistsQuery = MessageFormat.format("SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = ''{0}''", tableName);
+							final var resultSet = statement.executeQuery(checkIfExistsQuery);
+							if (resultSet.next()) {
+								final var truncateTableQuery = MessageFormat.format("TRUNCATE TABLE {0} CASCADE", tableName);
+								statement.execute(truncateTableQuery);
+							}
+						} catch (SQLException e) {
+							throw new RuntimeException(e);
+						}
+					});
+		} catch (SQLException e) {
+			// Handle any exceptions that occur during cleanup
+			e.printStackTrace();
+		}
+	}
+
 	@BeforeEach
 	public void setUp() {
 		RestAssured.port = port;
-	}
-
-	@Container
-	private static final PostgreSQLContainer<?> postgresqlContainer = new PostgreSQLContainer<>("postgres:11.1")
-			.withDatabaseName("test")
-			.withUsername("sa")
-			.withPassword("sa");
-
-	@DynamicPropertySource
-	private static void setProperties(DynamicPropertyRegistry registry) {
-		registry.add("spring.datasource.url", postgresqlContainer::getJdbcUrl);
-		registry.add("spring.datasource.username", postgresqlContainer::getUsername);
-		registry.add("spring.datasource.password", postgresqlContainer::getPassword);
 	}
 
 	public static class MerchantData {

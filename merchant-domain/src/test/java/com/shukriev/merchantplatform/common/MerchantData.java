@@ -16,6 +16,24 @@ public final class MerchantData {
 			1.0
 	);
 
+	public static final NormalMerchant badMerchantWithWrongEmail = new NormalMerchant(
+			"some@",
+			"some_name",
+			"some_password",
+			ActiveInactiveStatusEnum.ACTIVE,
+			"some_description",
+			1.0
+	);
+
+	public static final NormalMerchant badMerchantWithWrongTransactionSum = new NormalMerchant(
+			"some@",
+			"some_name",
+			"some_password",
+			ActiveInactiveStatusEnum.ACTIVE,
+			"some_description",
+			-10.0
+	);
+
 	public static final NormalMerchant inactiveMerchant = new NormalMerchant(
 			"inactiveMerchant@mail.com",
 			"inactive_merchant",

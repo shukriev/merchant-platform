@@ -9,8 +9,13 @@ import com.shukriev.merchantplatform.model.transaction.TransactionStatusEnum;
 import com.shukriev.merchantplatform.model.transaction.factory.TransactionFactory;
 import com.shukriev.merchantplatform.model.transaction.factory.TransactionType;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
 
 import java.util.Optional;
 
@@ -19,6 +24,24 @@ import static com.shukriev.merchantplatform.common.MerchantPlatformIntegrationTe
 import static io.restassured.RestAssured.given;
 
 class TransactionIntegrationTest extends MerchantPlatformIntegrationTest {
+	@Container
+	private static final PostgreSQLContainer<?> postgresqlContainer = new PostgreSQLContainer<>("postgres:11.1")
+			.withDatabaseName("test")
+			.withUsername("sa")
+			.withPassword("sa");
+
+	@DynamicPropertySource
+	private static void setProperties(DynamicPropertyRegistry registry) {
+		registry.add("spring.datasource.url", postgresqlContainer::getJdbcUrl);
+		registry.add("spring.datasource.username", postgresqlContainer::getUsername);
+		registry.add("spring.datasource.password", postgresqlContainer::getPassword);
+	}
+
+	@BeforeEach
+	void beforeEach() {
+		cleanDatabase(postgresqlContainer);
+	}
+
 	@Autowired
 	private MerchantService merchantService;
 
