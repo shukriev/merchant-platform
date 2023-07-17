@@ -10,6 +10,7 @@ import com.shukriev.merchantplatform.outbound.merchant.MerchantProvider;
 import com.shukriev.merchantplatform.outbound.transaction.TransactionProvider;
 
 import java.text.MessageFormat;
+import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
@@ -70,6 +71,11 @@ public final class TransactionServiceImpl implements TransactionService {
 		return transactionProvider.createTransaction(transaction);
 	}
 
+	@Override
+	public void deleteByTimestampBefore(LocalDateTime dateTime) {
+		transactionProvider.deleteByTimestampBefore(dateTime);
+	}
+
 	/***
 	 * The side effect of handling Charge Transaction is updating merchant's totalTransactionSum
 	 * Throws MerchantNotFoundException when the Transaction Merchant is not found
@@ -95,7 +101,7 @@ public final class TransactionServiceImpl implements TransactionService {
 	 * @param transactionId - Transaction UUID
 	 * @param transactionStatus - Transaction Status to validate
 	 * @param amount - Amount to be subtracted
-	 * @param referenceId - Reference UUID to update it's status to refunded
+	 * @param referenceId - Reference UUID to update it is status to refunded
 	 */
 	private void handleRefundTransaction(final UUID transactionId,
 										 final TransactionStatusEnum transactionStatus,

@@ -16,6 +16,8 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 
+import java.time.LocalDateTime;
+
 @SpringBootTest(classes = MerchantInfraMain.class)
 class TransactionProviderTest extends MerchantPlatformIntegrationTest {
 	@Container
@@ -102,5 +104,25 @@ class TransactionProviderTest extends MerchantPlatformIntegrationTest {
 		//Then
 		Assertions.assertNotNull(updatedTransaction);
 		Assertions.assertEquals(updateTransaction, updatedTransaction);
+	}
+
+	@Test
+	void shouldDeleteTransactionsBeforeTheProvidedTimeSuccessfullyTest() {
+		//Given
+		final var createdMerchant = merchantProvider.createMerchant(MerchantData.merchant);
+		final var transaction = TransactionData.of(createdMerchant);
+		final var t1 = transactionProvider.createTransaction(transaction);
+		final var t2 = transactionProvider.createTransaction(transaction);
+		final var t3 = transactionProvider.createTransaction(transaction);
+
+		//When
+		transactionProvider.deleteByTimestampBefore(LocalDateTime.now().plusMinutes(1));
+		//Then
+		//Assert T1 is deleted
+		Assertions.assertTrue(transactionProvider.getById(t1.getId()).isEmpty());
+		//Assert T2 is deleted
+		Assertions.assertTrue(transactionProvider.getById(t2.getId()).isEmpty());
+		//Assert T3 is deleted
+		Assertions.assertTrue(transactionProvider.getById(t3.getId()).isEmpty());
 	}
 }
