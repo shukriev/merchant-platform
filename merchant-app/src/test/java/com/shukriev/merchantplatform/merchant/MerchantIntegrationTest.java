@@ -5,8 +5,13 @@ import com.shukriev.merchantplatform.inbound.merchant.MerchantService;
 import com.shukriev.merchantplatform.model.merchant.ActiveInactiveStatusEnum;
 import com.shukriev.merchantplatform.model.merchant.NormalMerchant;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
 
 import java.util.UUID;
 
@@ -14,12 +19,30 @@ import static com.shukriev.merchantplatform.common.MerchantPlatformIntegrationTe
 import static io.restassured.RestAssured.given;
 
 class MerchantIntegrationTest extends MerchantPlatformIntegrationTest {
+	@Container
+	private static final PostgreSQLContainer<?> postgresqlContainer = new PostgreSQLContainer<>("postgres:11.1")
+			.withDatabaseName("test")
+			.withUsername("sa")
+			.withPassword("sa");
+
+	@DynamicPropertySource
+	private static void setProperties(DynamicPropertyRegistry registry) {
+		registry.add("spring.datasource.url", postgresqlContainer::getJdbcUrl);
+		registry.add("spring.datasource.username", postgresqlContainer::getUsername);
+		registry.add("spring.datasource.password", postgresqlContainer::getPassword);
+	}
+
+	@BeforeEach
+	void beforeEach() {
+		cleanDatabase(postgresqlContainer);
+	}
+
 	@Autowired
 	private MerchantService merchantService;
 
 	@Test
 	void shouldReturnMerchantsSuccessfullyTest() {
-		merchantService.createMerchant(merchant);
+		final var createdMerchant = merchantService.createMerchant(merchant);
 
 		//when
 		final var response = given()
@@ -36,11 +59,12 @@ class MerchantIntegrationTest extends MerchantPlatformIntegrationTest {
 		//then
 		Assertions.assertEquals(1, response.size());
 		Assertions.assertAll("Merchants Are Equal",
-				() -> Assertions.assertEquals(response.get(0).getEmail(), merchant.getEmail()),
-				() -> Assertions.assertEquals(response.get(0).getName(), merchant.getName()),
-				() -> Assertions.assertEquals(response.get(0).getStatus(), merchant.getStatus()),
-				() -> Assertions.assertEquals(response.get(0).getDescription(), merchant.getDescription()),
-				() -> Assertions.assertEquals(response.get(0).getTotalTransactionSum(), merchant.getTotalTransactionSum())
+				() -> Assertions.assertEquals(createdMerchant.getId(), response.get(0).getId()),
+				() -> Assertions.assertEquals(createdMerchant.getEmail(), response.get(0).getEmail()),
+				() -> Assertions.assertEquals(createdMerchant.getName(), response.get(0).getName()),
+				() -> Assertions.assertEquals(createdMerchant.getStatus(), response.get(0).getStatus()),
+				() -> Assertions.assertEquals(createdMerchant.getDescription(), response.get(0).getDescription()),
+				() -> Assertions.assertEquals(createdMerchant.getTotalTransactionSum(), response.get(0).getTotalTransactionSum())
 		);
 	}
 

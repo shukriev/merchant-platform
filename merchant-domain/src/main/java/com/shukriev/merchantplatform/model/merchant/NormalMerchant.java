@@ -49,6 +49,11 @@ public final class NormalMerchant extends Merchant {
 		return totalTransactionSum;
 	}
 
+	public Merchant updateTotalTransactionSum(Double amount) {
+		final var updatedTotalTransactionSum = this.getTotalTransactionSum() + amount;
+		return new NormalMerchant(this.getId(), this.getEmail(), this.getName(), this.getPassword(), this.getStatus(), this.getDescription(), updatedTotalTransactionSum);
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;

@@ -19,7 +19,7 @@ public abstract class Transaction {
 	@JoinColumn(name = "merchant_id")
 	@NotNull(message = "Transaction Merchant is required")
 	private NormalMerchant merchant;
-	@DecimalMin(value = "0", inclusive = false, message = "The amount must be larger than 0")
+	@DecimalMin(value = "0", inclusive = false, message = "The amount must be > 0")
 	private Double amount;
 	@NotNull(message = "Transaction status is required")
 	private TransactionStatusEnum status;
@@ -31,6 +31,10 @@ public abstract class Transaction {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "reference_id")
 	private Transaction reference;
+
+	public abstract void validateReferenceTransaction();
+
+	public abstract Transaction updateStatus(final TransactionStatusEnum status);
 
 	protected Transaction() {
 	}

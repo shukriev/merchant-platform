@@ -5,11 +5,7 @@ import com.shukriev.merchantplatform.model.merchant.NormalMerchant;
 import com.shukriev.merchantplatform.model.transaction.AuthorizeTransaction;
 import com.shukriev.merchantplatform.model.transaction.Transaction;
 import com.shukriev.merchantplatform.model.transaction.TransactionStatusEnum;
-import org.junit.jupiter.api.AfterEach;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.sql.DriverManager;
@@ -19,21 +15,8 @@ import java.util.List;
 
 @Testcontainers
 public class MerchantPlatformIntegrationTest {
-	@Container
-	private static final PostgreSQLContainer<?> postgresqlContainer = new PostgreSQLContainer<>("postgres:11.1")
-			.withDatabaseName("test")
-			.withUsername("sa")
-			.withPassword("sa");
 
-	@DynamicPropertySource
-	private static void setProperties(DynamicPropertyRegistry registry) {
-		registry.add("spring.datasource.url", postgresqlContainer::getJdbcUrl);
-		registry.add("spring.datasource.username", postgresqlContainer::getUsername);
-		registry.add("spring.datasource.password", postgresqlContainer::getPassword);
-	}
-
-	@AfterEach
-	void afterEach() throws SQLException {
+	protected void cleanDatabase(PostgreSQLContainer<?> postgresqlContainer) {
 		final var jdbcUrl = postgresqlContainer.getJdbcUrl();
 		final var username = postgresqlContainer.getUsername();
 		final var password = postgresqlContainer.getPassword();
@@ -44,7 +27,12 @@ public class MerchantPlatformIntegrationTest {
 			tablesToTruncate
 					.forEach(tableName -> {
 						try {
-							statement.executeUpdate(MessageFormat.format("TRUNCATE TABLE {0} CASCADE", tableName));
+							final var checkIfExistsQuery = MessageFormat.format("SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = ''{0}''", tableName);
+							final var resultSet = statement.executeQuery(checkIfExistsQuery);
+							if (resultSet.next()) {
+								final var truncateTableQuery = MessageFormat.format("TRUNCATE TABLE {0} CASCADE", tableName);
+								statement.execute(truncateTableQuery);
+							}
 						} catch (SQLException e) {
 							throw new RuntimeException(e);
 						}

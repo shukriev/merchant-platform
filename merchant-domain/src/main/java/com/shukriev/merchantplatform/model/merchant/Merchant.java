@@ -13,6 +13,7 @@ import java.util.UUID;
 public abstract class Merchant {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
+	//TODO add UUID validator
 	private UUID id;
 	@NotBlank
 	@Email(regexp = ".+@.+\\..+")

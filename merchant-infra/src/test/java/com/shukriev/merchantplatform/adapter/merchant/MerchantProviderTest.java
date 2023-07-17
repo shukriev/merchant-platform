@@ -5,21 +5,42 @@ import com.shukriev.merchantplatform.common.MerchantPlatformIntegrationTest;
 import com.shukriev.merchantplatform.model.merchant.ActiveInactiveStatusEnum;
 import com.shukriev.merchantplatform.model.merchant.NormalMerchant;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
 
 import static com.shukriev.merchantplatform.common.MerchantPlatformIntegrationTest.MerchantData.merchant;
 
 @SpringBootTest(classes = MerchantInfraMain.class)
 class MerchantProviderTest extends MerchantPlatformIntegrationTest {
+	@Container
+	private final static PostgreSQLContainer<?> postgresqlContainer = new PostgreSQLContainer<>("postgres:11.1")
+			.withDatabaseName("test")
+			.withUsername("sa")
+			.withPassword("sa");
+
+	@DynamicPropertySource
+	private static void setProperties(DynamicPropertyRegistry registry) {
+		registry.add("spring.datasource.url", postgresqlContainer::getJdbcUrl);
+		registry.add("spring.datasource.username", postgresqlContainer::getUsername);
+		registry.add("spring.datasource.password", postgresqlContainer::getPassword);
+	}
+
+	@BeforeEach
+	void beforeEach() {
+		cleanDatabase(postgresqlContainer);
+	}
+
 	@Autowired
 	private MerchantProviderImpl merchantProvider;
 
 	@Test
 	void shouldCreateMerchantSuccessfullyTest() {
-
-
 		final var createdMerchant = merchantProvider.createMerchant(merchant);
 
 		Assertions.assertNotNull(createdMerchant);
@@ -43,7 +64,7 @@ class MerchantProviderTest extends MerchantPlatformIntegrationTest {
 		Assertions.assertNotNull(updatedMerchant);
 
 		//Validate that the UUID is not changed
-		Assertions.assertEquals(merchant.getId(), updatedMerchant.getId());
+		Assertions.assertEquals(createdMerchant.getId(), updatedMerchant.getId());
 		Assertions.assertEquals(ActiveInactiveStatusEnum.INACTIVE, updatedMerchant.getStatus());
 	}
 

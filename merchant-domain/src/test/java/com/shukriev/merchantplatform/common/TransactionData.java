@@ -11,7 +11,7 @@ public final class TransactionData {
 
 	}
 
-	public static final Transaction transaction = new AuthorizeTransaction(
+	public static final Transaction validAuthorizeTransaction = new AuthorizeTransaction(
 			UUID.randomUUID(),
 			MerchantData.merchant,
 			10.0,
