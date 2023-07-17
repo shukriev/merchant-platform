@@ -76,7 +76,7 @@ class TransactionModelTest {
 		final var transaction = new AuthorizeTransaction(
 				null,
 				MerchantData.merchant,
-				10.0, // Amount
+				0.0, // Bad Amount
 				TransactionStatusEnum.APPROVED,
 				"someBadEmail", // Bad Email
 				"+30123123123", // Bad Phone Number
@@ -84,9 +84,10 @@ class TransactionModelTest {
 		// when
 		final List<ConstraintViolation<AuthorizeTransaction>> violations = validator.validate(transaction).stream().toList();
 		// then
-		Assertions.assertEquals(2, violations.size());
+		Assertions.assertEquals(3, violations.size());
 		Assertions.assertEquals("Wrong country code provided. It has to be +359 or starting with 0", violations.get(0).getMessage());
-		Assertions.assertEquals("Invalid customer email address", violations.get(1).getMessage());
+		Assertions.assertEquals("The amount must be > 0", violations.get(1).getMessage());
+		Assertions.assertEquals("Invalid customer email address", violations.get(2).getMessage());
 	}
 
 

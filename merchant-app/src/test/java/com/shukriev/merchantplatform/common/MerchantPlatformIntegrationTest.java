@@ -51,7 +51,16 @@ public class MerchantPlatformIntegrationTest {
 				"some_password",
 				ActiveInactiveStatusEnum.ACTIVE,
 				"some_description",
-				1.0d
+				1.0
+		);
+
+		public static final NormalMerchant defaultMerchant = new NormalMerchant(
+				"some@mail.com",
+				"some_name",
+				"some_password",
+				ActiveInactiveStatusEnum.ACTIVE,
+				"some_description",
+				0.0
 		);
 	}
 

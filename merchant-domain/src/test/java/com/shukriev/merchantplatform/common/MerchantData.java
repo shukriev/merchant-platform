@@ -13,7 +13,7 @@ public final class MerchantData {
 			"some_password",
 			ActiveInactiveStatusEnum.ACTIVE,
 			"some_description",
-			1.0d
+			1.0
 	);
 
 	public static final NormalMerchant inactiveMerchant = new NormalMerchant(
@@ -22,6 +22,6 @@ public final class MerchantData {
 			"some_password",
 			ActiveInactiveStatusEnum.INACTIVE,
 			"some_description",
-			1.0d
+			1.0
 	);
 }

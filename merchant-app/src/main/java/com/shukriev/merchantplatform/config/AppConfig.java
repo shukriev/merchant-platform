@@ -20,7 +20,8 @@ public class AppConfig {
 	}
 
 	@Bean
-	TransactionService transactionService(final TransactionProviderImpl transactionProvider) {
-		return new TransactionServiceImpl(transactionProvider);
+	TransactionService transactionService(final TransactionProviderImpl transactionProvider,
+										  final MerchantProviderImpl merchantProvider) {
+		return new TransactionServiceImpl(transactionProvider, merchantProvider);
 	}
 }

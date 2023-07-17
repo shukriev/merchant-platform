@@ -6,6 +6,7 @@ import com.shukriev.merchantplatform.exception.merchant.MerchantInactiveExceptio
 import com.shukriev.merchantplatform.exception.transaction.TransactionNotFoundException;
 import com.shukriev.merchantplatform.model.transaction.AuthorizeTransaction;
 import com.shukriev.merchantplatform.model.transaction.TransactionStatusEnum;
+import com.shukriev.merchantplatform.outbound.merchant.MerchantProvider;
 import com.shukriev.merchantplatform.outbound.transaction.TransactionProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,17 +26,20 @@ public class TransactionServiceTest {
 	@Mock
 	private TransactionProvider transactionProvider;
 
+	@Mock
+	private MerchantProvider merchantProvider;
+
 	private TransactionService transactionService;
 
 	@BeforeEach
 	public void init() {
-		transactionService = new TransactionServiceImpl(transactionProvider);
+		transactionService = new TransactionServiceImpl(transactionProvider, merchantProvider);
 	}
 
 	@Test
 	void shouldReturnValidAuthorizeTransactionByIdTest() {
 		// given
-		final var transaction = TransactionData.transaction;
+		final var transaction = TransactionData.validAuthorizeTransaction;
 		when(transactionProvider.getById(transaction.getId())).thenReturn(Optional.of(transaction));
 
 		// when
@@ -50,13 +54,12 @@ public class TransactionServiceTest {
 		// when -> then
 		when(transactionProvider.getById(transactionId)).thenReturn(Optional.empty());
 		Assertions.assertThrows(TransactionNotFoundException.class, () -> transactionService.getById(transactionId));
-
 	}
 
 	@Test
 	void shouldReturnMerchantTransactionsTransactionByIdTest() {
 		final var merchantId = UUID.randomUUID();
-		final var transaction = TransactionData.transaction;
+		final var transaction = TransactionData.validAuthorizeTransaction;
 
 		// given
 		when(transactionProvider.getMerchantTransactions(merchantId)).thenReturn(Set.of(transaction));
@@ -68,9 +71,20 @@ public class TransactionServiceTest {
 	}
 
 	@Test
-	void shouldCreateTransactionSuccessfullyTest() {
+	void shouldUpdateTransactionSuccessfullyTest() {
 		// given
-		final var transaction = TransactionData.transaction;
+		final var transaction = TransactionData.validAuthorizeTransaction;
+		when(transactionProvider.updateTransaction(transaction)).thenReturn(transaction);
+		// when
+		final var result = transactionService.updateTransaction(transaction);
+		// then
+		Assertions.assertEquals(transaction, result);
+	}
+
+	@Test
+	void shouldCreateAuthorizeTransactionSuccessfullyTest() {
+		// given
+		final var transaction = TransactionData.validAuthorizeTransaction;
 		when(transactionProvider.createTransaction(transaction)).thenReturn(transaction);
 
 		// when
@@ -93,16 +107,5 @@ public class TransactionServiceTest {
 
 		// when - then
 		Assertions.assertThrows(MerchantInactiveException.class, () -> transactionService.createTransaction(transaction));
-	}
-
-	@Test
-	void shouldUpdateTransactionSuccessfullyTest() {
-		// given
-		final var transaction = TransactionData.transaction;
-		when(transactionProvider.updateTransaction(transaction)).thenReturn(transaction);
-		// when
-		final var result = transactionService.updateTransaction(transaction);
-		// then
-		Assertions.assertEquals(transaction, result);
 	}
 }
