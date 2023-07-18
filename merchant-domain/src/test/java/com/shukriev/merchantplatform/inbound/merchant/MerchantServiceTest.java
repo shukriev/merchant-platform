@@ -2,6 +2,7 @@ package com.shukriev.merchantplatform.inbound.merchant;
 
 import com.shukriev.merchantplatform.exception.merchant.MerchantNotFoundException;
 import com.shukriev.merchantplatform.model.merchant.ActiveInactiveStatusEnum;
+import com.shukriev.merchantplatform.model.merchant.Merchant;
 import com.shukriev.merchantplatform.model.merchant.NormalMerchant;
 import com.shukriev.merchantplatform.outbound.merchant.MerchantProvider;
 import org.junit.jupiter.api.Assertions;
@@ -40,7 +41,7 @@ class MerchantServiceTest {
 				1.0d);
 
 		// given
-		final var merchants = Set.of(merchant);
+		final Set<Merchant> merchants = Set.of(merchant);
 		when(merchantProvider.getMerchants()).thenReturn(merchants);
 		// when
 		final var result = merchantService.getMerchants();
@@ -72,7 +73,7 @@ class MerchantServiceTest {
 		// given
 		when(merchantProvider.getById(generatedUuid)).thenReturn(Optional.of(merchant));
 		// when
-		final NormalMerchant result = merchantService.getById(generatedUuid);
+		final Merchant result = merchantService.getById(generatedUuid);
 		// then
 		Assertions.assertEquals(merchant, result);
 	}

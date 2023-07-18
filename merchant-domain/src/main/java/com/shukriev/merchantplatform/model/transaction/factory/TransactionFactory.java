@@ -6,6 +6,8 @@ import com.shukriev.merchantplatform.model.transaction.*;
 import java.util.UUID;
 
 public final class TransactionFactory {
+	private TransactionFactory() {
+	}
 
 	public static Transaction getTransaction(
 			final UUID id,
@@ -17,10 +19,12 @@ public final class TransactionFactory {
 			final Transaction reference,
 			final TransactionType transactionType) {
 		return switch (transactionType) {
-			case AUTHORIZE -> new AuthorizeTransaction(id, merchant, amount, status, customerEmail, customerPhone, reference);
+			case AUTHORIZE ->
+					new AuthorizeTransaction(id, merchant, amount, status, customerEmail, customerPhone, reference);
 			case CHARGE -> new ChargeTransaction(id, merchant, amount, status, customerEmail, customerPhone, reference);
 			case REFUND -> new RefundTransaction(id, merchant, amount, status, customerEmail, customerPhone, reference);
-			case REVERSAL -> new ReversalTransaction(id, merchant, amount, status, customerEmail, customerPhone, reference);
+			case REVERSAL ->
+					new ReversalTransaction(id, merchant, amount, status, customerEmail, customerPhone, reference);
 		};
 	}
 }

@@ -5,6 +5,7 @@ import com.shukriev.merchantplatform.controller.transaction.dto.CreateTransactio
 import com.shukriev.merchantplatform.controller.transaction.dto.DetailedTransactionDTO;
 import com.shukriev.merchantplatform.inbound.merchant.MerchantService;
 import com.shukriev.merchantplatform.inbound.transaction.TransactionService;
+import com.shukriev.merchantplatform.model.merchant.NormalMerchant;
 import com.shukriev.merchantplatform.model.transaction.TransactionStatusEnum;
 import com.shukriev.merchantplatform.model.transaction.factory.TransactionFactory;
 import com.shukriev.merchantplatform.model.transaction.factory.TransactionType;
@@ -50,7 +51,7 @@ class TransactionIntegrationTest extends MerchantPlatformIntegrationTest {
 
 	@Test
 	void shouldCreateAuthorizeTransactionSuccessfullyTest() {
-		final var createdMerchant = merchantService.createMerchant(merchant);
+		final var createdMerchant = (NormalMerchant) merchantService.createMerchant(merchant);
 		final var transactionToCreate = TransactionData.getCreateTransactionDTO(TransactionType.AUTHORIZE, createdMerchant);
 
 		//when
@@ -82,7 +83,7 @@ class TransactionIntegrationTest extends MerchantPlatformIntegrationTest {
 
 	@Test
 	void shouldCreateChargeTransactionSuccessfullyTest() {
-		final var createdMerchant = merchantService.createMerchant(defaultMerchant);
+		final var createdMerchant = (NormalMerchant) merchantService.createMerchant(defaultMerchant);
 		final var authorizeTransaction = Optional.ofNullable(TransactionFactory
 						.getTransaction(null,
 								createdMerchant,
@@ -121,13 +122,13 @@ class TransactionIntegrationTest extends MerchantPlatformIntegrationTest {
 		Assertions.assertNotNull(response);
 		Assertions.assertNotNull(response.id());
 		//Assert if merchant total sum has increased with the transaction amount
-		final var selectedMerchantToAssert = merchantService.getById(createdMerchant.getId());
+		final var selectedMerchantToAssert = (NormalMerchant) merchantService.getById(createdMerchant.getId());
 		Assertions.assertEquals(100.0, selectedMerchantToAssert.getTotalTransactionSum());
 	}
 
 	@Test
 	void shouldCreateChargeTransactionWithoutUpdatingMerchantSumSuccessfullyTest() {
-		final var createdMerchant = merchantService.createMerchant(defaultMerchant);
+		final var createdMerchant = (NormalMerchant) merchantService.createMerchant(defaultMerchant);
 		final var authorizeTransaction = Optional.ofNullable(TransactionFactory
 						.getTransaction(null,
 								createdMerchant,
@@ -166,7 +167,7 @@ class TransactionIntegrationTest extends MerchantPlatformIntegrationTest {
 		Assertions.assertNotNull(response);
 		Assertions.assertNotNull(response.id());
 		//Assert that merchant sum is not updated due to invalid charge transaction status
-		final var selectedMerchantToAssert = merchantService.getById(createdMerchant.getId());
+		final var selectedMerchantToAssert = (NormalMerchant) merchantService.getById(createdMerchant.getId());
 		Assertions.assertEquals(0.0, selectedMerchantToAssert.getTotalTransactionSum());
 	}
 
@@ -199,7 +200,7 @@ class TransactionIntegrationTest extends MerchantPlatformIntegrationTest {
 
 	@Test
 	void shouldCreateReversalTransactionSuccessfullyTest() {
-		final var createdMerchant = merchantService.createMerchant(defaultMerchant);
+		final var createdMerchant = (NormalMerchant) merchantService.createMerchant(defaultMerchant);
 		final var authorizeTransaction = Optional.ofNullable(TransactionFactory
 						.getTransaction(null,
 								createdMerchant,
@@ -270,7 +271,7 @@ class TransactionIntegrationTest extends MerchantPlatformIntegrationTest {
 
 	@Test
 	void shouldCreateFullRefundTransactionSuccessfullyTest() {
-		final var createdMerchant = merchantService.createMerchant(defaultMerchant);
+		final var createdMerchant = (NormalMerchant) merchantService.createMerchant(defaultMerchant);
 		final var authorizeTransaction = Optional.ofNullable(TransactionFactory
 						.getTransaction(null,
 								createdMerchant,
@@ -325,13 +326,13 @@ class TransactionIntegrationTest extends MerchantPlatformIntegrationTest {
 		Assertions.assertEquals(TransactionStatusEnum.REFUNDED, selectedChargeTransactionToAssert.getStatus());
 
 		//Assert Merchant sum is decreased with the full transaction amount
-		final var merchantToAssert = merchantService.getById(createdMerchant.getId());
+		final var merchantToAssert = (NormalMerchant) merchantService.getById(createdMerchant.getId());
 		Assertions.assertEquals(0.0, merchantToAssert.getTotalTransactionSum());
 	}
 
 	@Test
 	void shouldCreatePartialRefundTransactionSuccessfullyTest() {
-		final var createdMerchant = merchantService.createMerchant(defaultMerchant);
+		final var createdMerchant = (NormalMerchant) merchantService.createMerchant(defaultMerchant);
 		final var authorizeTransaction = Optional.ofNullable(TransactionFactory
 						.getTransaction(null,
 								createdMerchant,
@@ -386,13 +387,13 @@ class TransactionIntegrationTest extends MerchantPlatformIntegrationTest {
 		Assertions.assertEquals(TransactionStatusEnum.REFUNDED, selectedChargeTransactionToAssert.getStatus());
 
 		//Assert Merchant sum is decreased with the full transaction amount
-		final var merchantToAssert = merchantService.getById(createdMerchant.getId());
+		final var merchantToAssert = (NormalMerchant) merchantService.getById(createdMerchant.getId());
 		Assertions.assertEquals(50.0, merchantToAssert.getTotalTransactionSum());
 	}
 
 	@Test
 	void shouldCreateRefundTransactionWithoutDecreasingMerchantSumTest() {
-		final var createdMerchant = merchantService.createMerchant(defaultMerchant);
+		final var createdMerchant = (NormalMerchant) merchantService.createMerchant(defaultMerchant);
 		final var authorizeTransaction = Optional.ofNullable(TransactionFactory
 						.getTransaction(null,
 								createdMerchant,
@@ -447,13 +448,13 @@ class TransactionIntegrationTest extends MerchantPlatformIntegrationTest {
 		Assertions.assertEquals(TransactionStatusEnum.REFUNDED, selectedChargeTransactionToAssert.getStatus());
 
 		//Assert Merchant sum is not decreased due to bad status
-		final var merchantToAssert = merchantService.getById(createdMerchant.getId());
+		final var merchantToAssert = (NormalMerchant) merchantService.getById(createdMerchant.getId());
 		Assertions.assertEquals(100.0, merchantToAssert.getTotalTransactionSum());
 	}
 
 	@Test
 	void shouldFailCreateNegativeRefundTransactionDueToNegativeAmountTest() {
-		final var createdMerchant = merchantService.createMerchant(defaultMerchant);
+		final var createdMerchant = (NormalMerchant) merchantService.createMerchant(defaultMerchant);
 		final var authorizeTransaction = Optional.ofNullable(TransactionFactory
 						.getTransaction(null,
 								createdMerchant,

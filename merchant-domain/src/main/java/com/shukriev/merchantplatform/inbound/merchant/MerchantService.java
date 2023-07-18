@@ -1,18 +1,19 @@
 package com.shukriev.merchantplatform.inbound.merchant;
 
+import com.shukriev.merchantplatform.model.merchant.Merchant;
 import com.shukriev.merchantplatform.model.merchant.NormalMerchant;
 
 import java.util.Set;
 import java.util.UUID;
 
 public interface MerchantService {
-	NormalMerchant getById(final UUID id);
+	Merchant getById(final UUID id);
 
-	Set<NormalMerchant> getMerchants();
+	Set<Merchant> getMerchants();
 
-	NormalMerchant updateMerchant(final NormalMerchant merchant);
+	Merchant updateMerchant(final Merchant merchant);
 
-	NormalMerchant createMerchant(final NormalMerchant merchant);
+	Merchant createMerchant(final Merchant merchant);
 
 	boolean deleteMerchant(final UUID id);
 }

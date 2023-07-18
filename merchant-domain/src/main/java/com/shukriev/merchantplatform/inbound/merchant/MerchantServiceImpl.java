@@ -1,7 +1,7 @@
 package com.shukriev.merchantplatform.inbound.merchant;
 
 import com.shukriev.merchantplatform.exception.merchant.MerchantNotFoundException;
-import com.shukriev.merchantplatform.model.merchant.NormalMerchant;
+import com.shukriev.merchantplatform.model.merchant.Merchant;
 import com.shukriev.merchantplatform.outbound.merchant.MerchantProvider;
 
 import java.text.MessageFormat;
@@ -16,14 +16,14 @@ public final class MerchantServiceImpl implements MerchantService {
 	}
 
 	@Override
-	public NormalMerchant getById(UUID id) {
+	public Merchant getById(UUID id) {
 		final var merchant = merchantProvider.getById(id);
 		return merchant.orElseThrow(() ->
 				new MerchantNotFoundException(MessageFormat.format("Merchant with id: {0} not found", id)));
 	}
 
 	@Override
-	public Set<NormalMerchant> getMerchants() {
+	public Set<Merchant> getMerchants() {
 		final var merchants = merchantProvider.getMerchants();
 		if (merchants.isEmpty()) {
 			throw new MerchantNotFoundException("Merchants not found");
@@ -33,12 +33,12 @@ public final class MerchantServiceImpl implements MerchantService {
 	}
 
 	@Override
-	public NormalMerchant updateMerchant(NormalMerchant merchant) {
+	public Merchant updateMerchant(Merchant merchant) {
 		return merchantProvider.updateMerchant(merchant);
 	}
 
 	@Override
-	public NormalMerchant createMerchant(NormalMerchant merchant) {
+	public Merchant createMerchant(Merchant merchant) {
 		return merchantProvider.createMerchant(merchant);
 	}
 

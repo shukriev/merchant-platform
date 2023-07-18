@@ -1,5 +1,6 @@
 package com.shukriev.merchantplatform.adapter.merchant;
 
+import com.shukriev.merchantplatform.model.merchant.Merchant;
 import com.shukriev.merchantplatform.model.merchant.NormalMerchant;
 import com.shukriev.merchantplatform.outbound.merchant.MerchantProvider;
 import com.shukriev.merchantplatform.repository.postgres.merchant.MerchantRepository;
@@ -20,24 +21,24 @@ public class MerchantProviderImpl implements MerchantProvider {
 	}
 
 	@Override
-	public Optional<NormalMerchant> getById(UUID id) {
+	public Optional<Merchant> getById(UUID id) {
 		return merchantRepository.findById(id);
 	}
 
 	@Override
-	public Set<NormalMerchant> getMerchants() {
+	public Set<Merchant> getMerchants() {
 		return StreamSupport.stream(
 				Spliterators.spliteratorUnknownSize(merchantRepository.findAll().iterator(), Spliterator.ORDERED),
 				false).collect(Collectors.toSet());
 	}
 
 	@Override
-	public NormalMerchant updateMerchant(NormalMerchant merchant) {
+	public Merchant updateMerchant(Merchant merchant) {
 		return merchantRepository.save(merchant);
 	}
 
 	@Override
-	public NormalMerchant createMerchant(NormalMerchant merchant) {
+	public Merchant createMerchant(Merchant merchant) {
 		return merchantRepository.save(merchant);
 	}
 
