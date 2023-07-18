@@ -25,7 +25,7 @@ public class MerchantController {
 	}
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Set<NormalMerchant>> getMerchants() {
+	public ResponseEntity<Set<?>> getMerchants() {
 		final var merchants = merchantService.getMerchants();
 		return new ResponseEntity<>(merchants, HttpStatus.OK);
 	}

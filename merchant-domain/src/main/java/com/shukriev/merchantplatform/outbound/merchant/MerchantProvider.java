@@ -1,5 +1,6 @@
 package com.shukriev.merchantplatform.outbound.merchant;
 
+import com.shukriev.merchantplatform.model.merchant.Merchant;
 import com.shukriev.merchantplatform.model.merchant.NormalMerchant;
 import jakarta.validation.constraints.NotNull;
 
@@ -9,16 +10,16 @@ import java.util.UUID;
 
 public interface MerchantProvider {
 	@NotNull
-	Optional<NormalMerchant> getById(final UUID id);
+	Optional<Merchant> getById(final UUID id);
 
 	@NotNull
-	Set<NormalMerchant> getMerchants();
+	Set<Merchant> getMerchants();
 
 	@NotNull
-	NormalMerchant updateMerchant(final NormalMerchant merchant);
+	Merchant updateMerchant(final Merchant merchant);
 
 	@NotNull
-	NormalMerchant createMerchant(final NormalMerchant merchant);
+	Merchant createMerchant(final Merchant merchant);
 
 	boolean deleteMerchant(final UUID id);
 }

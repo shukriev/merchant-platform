@@ -3,6 +3,7 @@ package com.shukriev.merchantplatform.adapter.transaction;
 import com.shukriev.merchantplatform.MerchantInfraMain;
 import com.shukriev.merchantplatform.adapter.merchant.MerchantProviderImpl;
 import com.shukriev.merchantplatform.common.MerchantPlatformIntegrationTest;
+import com.shukriev.merchantplatform.model.merchant.NormalMerchant;
 import com.shukriev.merchantplatform.model.transaction.RefundTransaction;
 import com.shukriev.merchantplatform.model.transaction.Transaction;
 import com.shukriev.merchantplatform.model.transaction.TransactionStatusEnum;
@@ -47,7 +48,7 @@ class TransactionProviderTest extends MerchantPlatformIntegrationTest {
 	@Test
 	void shouldCreateTransactionSuccessfullyTest() {
 		//Given
-		final var createdMerchant = merchantProvider.createMerchant(MerchantData.merchant);
+		final var createdMerchant = (NormalMerchant) merchantProvider.createMerchant(MerchantData.merchant);
 		final var transaction = TransactionData.of(createdMerchant);
 		//When
 		final var createdTransaction = transactionProvider.createTransaction(transaction);
@@ -60,7 +61,7 @@ class TransactionProviderTest extends MerchantPlatformIntegrationTest {
 	@Test
 	void shouldReturnTransactionByIdSuccessfullyTest() {
 		//Given
-		final var createdMerchant = merchantProvider.createMerchant(MerchantData.merchant);
+		final var createdMerchant = (NormalMerchant) merchantProvider.createMerchant(MerchantData.merchant);
 		final var transaction = TransactionData.of(createdMerchant);
 		final Transaction createdTransaction = transactionProvider.createTransaction(transaction);
 		//When
@@ -74,7 +75,7 @@ class TransactionProviderTest extends MerchantPlatformIntegrationTest {
 	@Test
 	void shouldReturnMerchantTransactionsSuccessfullyTest() {
 		//Given
-		final var createdMerchant = merchantProvider.createMerchant(MerchantData.merchant);
+		final var createdMerchant = (NormalMerchant) merchantProvider.createMerchant(MerchantData.merchant);
 		final var transaction = TransactionData.of(createdMerchant);
 		final Transaction createdTransaction = transactionProvider.createTransaction(transaction);
 		//When
@@ -87,7 +88,7 @@ class TransactionProviderTest extends MerchantPlatformIntegrationTest {
 	@Test
 	void shouldUpdateTransactionsSuccessfullyTest() {
 		//Given
-		final var createdMerchant = merchantProvider.createMerchant(MerchantData.merchant);
+		final var createdMerchant = (NormalMerchant) merchantProvider.createMerchant(MerchantData.merchant);
 		final var transaction = TransactionData.of(createdMerchant);
 		final var createdTransaction = transactionProvider.createTransaction(transaction);
 		final var updateTransaction = new RefundTransaction(
@@ -109,7 +110,7 @@ class TransactionProviderTest extends MerchantPlatformIntegrationTest {
 	@Test
 	void shouldDeleteTransactionsBeforeTheProvidedTimeSuccessfullyTest() {
 		//Given
-		final var createdMerchant = merchantProvider.createMerchant(MerchantData.merchant);
+		final var createdMerchant = (NormalMerchant) merchantProvider.createMerchant(MerchantData.merchant);
 		final var transaction = TransactionData.of(createdMerchant);
 		final var t1 = transactionProvider.createTransaction(transaction);
 		final var t2 = transactionProvider.createTransaction(transaction);

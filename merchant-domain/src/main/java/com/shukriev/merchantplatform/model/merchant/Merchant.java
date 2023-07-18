@@ -3,6 +3,7 @@ package com.shukriev.merchantplatform.model.merchant;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -18,7 +19,11 @@ public abstract class Merchant {
 	@NotBlank
 	@Email(regexp = ".+@.+\\..+")
 	private String email;
+	@NotBlank
 	private String name;
+	@NotBlank
+	@Size(min = 5, message = "The password should not be shorten than 5 characters")
+	//TODO some more validations can be added
 	private String password;
 	private ActiveInactiveStatusEnum status;
 

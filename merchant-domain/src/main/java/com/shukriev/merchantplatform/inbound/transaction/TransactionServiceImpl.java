@@ -88,6 +88,7 @@ public final class TransactionServiceImpl implements TransactionService {
 										 final Double amount) {
 		if (TransactionStatusEnum.APPROVED.equals(transactionStatus)) {
 			merchantProvider.getById(merchantId)
+					.map(m -> (NormalMerchant) m)
 					.map(m -> m.updateTotalTransactionSum(amount))
 					.map(m -> merchantProvider.updateMerchant((NormalMerchant) m))
 					.orElseThrow(() -> new MerchantNotFoundException(MessageFormat.format("Failed to find Merchant with id: {0}", merchantId)));
@@ -116,6 +117,7 @@ public final class TransactionServiceImpl implements TransactionService {
 
 		if (TransactionStatusEnum.APPROVED.equals(transactionStatus)) {
 			merchantProvider.getById(merchantId)
+					.map(m -> (NormalMerchant) m)
 					.map(m -> (NormalMerchant) m.updateTotalTransactionSum(-amount))
 					.map(merchantProvider::updateMerchant)
 					.orElseThrow(() -> new MerchantNotFoundException(MessageFormat.format("Failed to find Merchant with id: {0}", merchantId)));

@@ -50,7 +50,7 @@ class MerchantProviderTest extends MerchantPlatformIntegrationTest {
 
 	@Test
 	void shouldUpdateMerchantSuccessfullyTest() {
-		final var createdMerchant = merchantProvider.createMerchant(merchant);
+		final var createdMerchant = (NormalMerchant) merchantProvider.createMerchant(merchant);
 		final var updateMerchant = new NormalMerchant(
 				createdMerchant.getId(),
 				createdMerchant.getEmail(),

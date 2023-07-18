@@ -42,7 +42,7 @@ class MerchantIntegrationTest extends MerchantPlatformIntegrationTest {
 
 	@Test
 	void shouldReturnMerchantsSuccessfullyTest() {
-		final var createdMerchant = merchantService.createMerchant(merchant);
+		final var createdMerchant = (NormalMerchant) merchantService.createMerchant(merchant);
 
 		//when
 		final var response = given()
@@ -105,7 +105,7 @@ class MerchantIntegrationTest extends MerchantPlatformIntegrationTest {
 
 	@Test
 	void shouldReturnUpdatedMerchantSuccessfullyTest() {
-		final var createdMerchant = merchantService.createMerchant(merchant);
+		final var createdMerchant = (NormalMerchant) merchantService.createMerchant(merchant);
 
 		final var merchantToBeUpdated = new NormalMerchant(
 				createdMerchant.getId(),
@@ -135,7 +135,7 @@ class MerchantIntegrationTest extends MerchantPlatformIntegrationTest {
 
 	@Test
 	void shouldFailUpdatedMerchantDueToNonMatchingTest() {
-		final var createdMerchant = merchantService.createMerchant(merchant);
+		final var createdMerchant = (NormalMerchant) merchantService.createMerchant(merchant);
 
 		final var merchantToBeUpdated = new NormalMerchant(
 				UUID.randomUUID(),

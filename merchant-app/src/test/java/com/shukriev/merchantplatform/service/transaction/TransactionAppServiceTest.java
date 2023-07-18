@@ -3,6 +3,7 @@ package com.shukriev.merchantplatform.service.transaction;
 import com.shukriev.merchantplatform.common.MerchantPlatformIntegrationTest;
 import com.shukriev.merchantplatform.controller.transaction.dto.DetailedTransactionDTO;
 import com.shukriev.merchantplatform.inbound.merchant.MerchantService;
+import com.shukriev.merchantplatform.model.merchant.NormalMerchant;
 import com.shukriev.merchantplatform.model.transaction.factory.TransactionType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,7 +46,7 @@ class TransactionAppServiceTest extends MerchantPlatformIntegrationTest {
 	@Test
 	void shouldCreateTransactionSuccessfullyTest() {
 		// Given
-		final var createdMerchant = merchantService.createMerchant(merchant);
+		final var createdMerchant = (NormalMerchant) merchantService.createMerchant(merchant);
 		final var transactionToCreate = TransactionData.getCreateTransactionDTO(TransactionType.AUTHORIZE, createdMerchant);
 
 		// When

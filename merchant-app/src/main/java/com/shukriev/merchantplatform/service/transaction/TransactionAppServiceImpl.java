@@ -4,6 +4,7 @@ import com.shukriev.merchantplatform.controller.transaction.dto.CreateTransactio
 import com.shukriev.merchantplatform.controller.transaction.dto.DetailedTransactionDTO;
 import com.shukriev.merchantplatform.inbound.merchant.MerchantService;
 import com.shukriev.merchantplatform.inbound.transaction.TransactionService;
+import com.shukriev.merchantplatform.model.merchant.NormalMerchant;
 import com.shukriev.merchantplatform.model.transaction.factory.TransactionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ public class TransactionAppServiceImpl implements TransactionAppService {
 	@Override
 	@Transactional
 	public DetailedTransactionDTO createTransaction(CreateTransactionDTO createTransactionDTO) {
-		final var merchant = merchantService.getById(createTransactionDTO.merchantId());
+		final var merchant = (NormalMerchant) merchantService.getById(createTransactionDTO.merchantId());
 		final var transaction = TransactionFactory.getTransaction(
 				null, //Initially the created transaction is with empty ID
 				merchant,
