@@ -1,7 +1,6 @@
 package com.shukriev.merchantplatform.model.transaction;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum TransactionStatusEnum {
 	APPROVED("Approved"), REVERSED("Reversed"), REFUNDED("Refunded"), ERROR("Error");
@@ -10,11 +9,6 @@ public enum TransactionStatusEnum {
 
 	TransactionStatusEnum(String value) {
 		this.value = value;
-	}
-
-	@JsonValue
-	public String getValue() {
-		return value;
 	}
 
 	@JsonCreator

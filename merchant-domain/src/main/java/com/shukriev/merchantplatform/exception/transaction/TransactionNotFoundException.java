@@ -1,7 +1,7 @@
 package com.shukriev.merchantplatform.exception.transaction;
 
 public final class TransactionNotFoundException extends RuntimeException {
-	public TransactionNotFoundException(String message) {
+	public TransactionNotFoundException(final String message) {
 		super(message);
 	}
 }

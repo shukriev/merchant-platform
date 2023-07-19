@@ -33,6 +33,7 @@
         <testcontainers-junit-jupiter.version>1.18.3</testcontainers-junit-jupiter.version>
         <spring-boot-test.version>3.1.1</spring-boot-test.version>
         <rest-assured.version>5.3.1</rest-assured.version>
+        <checkstyle.plugin.version>3.3.0</checkstyle.plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -125,4 +126,27 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${checkstyle.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>checkstyle-validate</id>
+                        <phase>verify</phase>
+                        <configuration>
+                            <configLocation>checkstyle/checkstyle.xml</configLocation>
+                            <failOnViolation>true</failOnViolation>
+                        </configuration>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

@@ -1,7 +1,6 @@
 package com.shukriev.merchantplatform.outbound.merchant;
 
 import com.shukriev.merchantplatform.model.merchant.Merchant;
-import com.shukriev.merchantplatform.model.merchant.NormalMerchant;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.Optional;

@@ -1,7 +1,6 @@
 package com.shukriev.merchantplatform.inbound.merchant;
 
 import com.shukriev.merchantplatform.model.merchant.Merchant;
-import com.shukriev.merchantplatform.model.merchant.NormalMerchant;
 
 import java.util.Set;
 import java.util.UUID;

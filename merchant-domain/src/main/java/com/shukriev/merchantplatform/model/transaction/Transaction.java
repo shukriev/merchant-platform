@@ -47,7 +47,9 @@ public abstract class Transaction {
 	protected Transaction() {
 	}
 
-	protected Transaction(UUID id, NormalMerchant merchant, Double amount, TransactionStatusEnum status, String customerEmail, String customerPhone, Transaction reference) {
+	protected Transaction(final UUID id, final NormalMerchant merchant, final Double amount,
+						  final TransactionStatusEnum status, final String customerEmail,
+						  final String customerPhone, final Transaction reference) {
 		this.id = id;
 		this.merchant = merchant;
 		this.amount = amount;
@@ -95,9 +97,16 @@ public abstract class Transaction {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof Transaction that)) return false;
-		return Objects.equals(id, that.id) && Objects.equals(merchant, that.merchant) && Objects.equals(amount, that.amount) && status == that.status && Objects.equals(customerEmail, that.customerEmail) && Objects.equals(customerPhone, that.customerPhone) && Objects.equals(reference, that.reference);
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof Transaction that)) {
+			return false;
+		}
+		return Objects.equals(id, that.id) && Objects.equals(merchant, that.merchant) &&
+				Objects.equals(amount, that.amount) && status == that.status &&
+				Objects.equals(customerEmail, that.customerEmail) &&
+				Objects.equals(customerPhone, that.customerPhone) && Objects.equals(reference, that.reference);
 	}
 
 	@Override

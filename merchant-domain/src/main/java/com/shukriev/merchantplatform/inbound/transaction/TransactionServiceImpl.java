@@ -27,7 +27,8 @@ public final class TransactionServiceImpl implements TransactionService {
 	@Override
 	public Transaction getById(UUID id) {
 		return transactionProvider.getById(id).orElseThrow(() ->
-				new TransactionNotFoundException(MessageFormat.format("Transaction with id: {0} not found", id)));
+				new TransactionNotFoundException(MessageFormat.format(
+						"Transaction with id: {0} not found", id)));
 	}
 
 	@Override
@@ -46,7 +47,9 @@ public final class TransactionServiceImpl implements TransactionService {
 		transaction.validateReferenceTransaction();
 
 		if (ActiveInactiveStatusEnum.INACTIVE.equals(transaction.getMerchant().getStatus())) {
-			throw new MerchantInactiveException("Failed to create transaction, the provided merchant is inactive", transaction.getMerchant().getId());
+			throw new MerchantInactiveException(
+					"Failed to create transaction, the provided merchant is inactive",
+					transaction.getMerchant().getId());
 		}
 
 		//There is nothing to handle in the Authorization Transaction we just store it
@@ -90,15 +93,17 @@ public final class TransactionServiceImpl implements TransactionService {
 			merchantProvider.getById(merchantId)
 					.map(m -> (NormalMerchant) m)
 					.map(m -> m.updateTotalTransactionSum(amount))
-					.map(m -> merchantProvider.updateMerchant((NormalMerchant) m))
-					.orElseThrow(() -> new MerchantNotFoundException(MessageFormat.format("Failed to find Merchant with id: {0}", merchantId)));
+					.map(merchantProvider::updateMerchant)
+					.orElseThrow(() -> new MerchantNotFoundException(MessageFormat.format(
+							"Failed to find Merchant with id: {0}", merchantId)));
 		}
 	}
 
 	/***
 	 * Handling Refund transactions
 	 * We need to update the reference transaction (Which has to be Charge Transaction) status to Refunded
-	 * If the Refund transaction status is Approved then the transaction amount has to be subtracted from the Merchant's total transaction sum
+	 * If the Refund transaction status is Approved then the transaction amount has to be subtracted
+	 * from the Merchant's total transaction sum
 	 * @param transactionId - Transaction UUID
 	 * @param transactionStatus - Transaction Status to validate
 	 * @param amount - Amount to be subtracted
@@ -113,14 +118,17 @@ public final class TransactionServiceImpl implements TransactionService {
 				.map(rt -> rt.updateStatus(TransactionStatusEnum.REFUNDED))
 				.map(transactionProvider::updateTransaction)
 				.orElseThrow(() -> new TransactionNotFoundException(
-						MessageFormat.format("Reference transaction with id {0} not found for parent transaction with id: ", referenceId, transactionId)));
+						MessageFormat.format(
+								"Reference transaction with id {0} not found for parent transaction with id: ",
+								referenceId, transactionId)));
 
 		if (TransactionStatusEnum.APPROVED.equals(transactionStatus)) {
 			merchantProvider.getById(merchantId)
 					.map(m -> (NormalMerchant) m)
 					.map(m -> (NormalMerchant) m.updateTotalTransactionSum(-amount))
 					.map(merchantProvider::updateMerchant)
-					.orElseThrow(() -> new MerchantNotFoundException(MessageFormat.format("Failed to find Merchant with id: {0}", merchantId)));
+					.orElseThrow(() -> new MerchantNotFoundException(MessageFormat.format(
+							"Failed to find Merchant with id: {0}", merchantId)));
 		}
 	}
 
@@ -129,6 +137,8 @@ public final class TransactionServiceImpl implements TransactionService {
 				.map(t -> t.updateStatus(TransactionStatusEnum.REVERSED))
 				.map(transactionProvider::updateTransaction)
 				.orElseThrow(() -> new TransactionNotFoundException(
-						MessageFormat.format("Reference transaction with id {0} not found for parent transaction with id: ", referenceId, transactionId)));
+						MessageFormat.format(
+								"Reference transaction with id {0} not found for parent transaction with id: ",
+								referenceId, transactionId)));
 	}
 }

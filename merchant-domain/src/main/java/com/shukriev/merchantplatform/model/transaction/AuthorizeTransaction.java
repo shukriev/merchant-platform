@@ -20,13 +20,16 @@ public class AuthorizeTransaction extends Transaction {
 
 	@Override
 	public Transaction updateStatus(final TransactionStatusEnum status) {
-		return new AuthorizeTransaction(this.getId(), this.getMerchant(), this.getAmount(), status, this.getCustomerEmail(), this.getCustomerPhone(), this.getReference());
+		return new AuthorizeTransaction(this.getId(), this.getMerchant(), this.getAmount(), status,
+				this.getCustomerEmail(), this.getCustomerPhone(), this.getReference());
 	}
 
 	public AuthorizeTransaction() {
 	}
 
-	public AuthorizeTransaction(UUID id, NormalMerchant merchant, Double amount, TransactionStatusEnum status, String customerEmail, String customerPhone, Transaction reference) {
+	public AuthorizeTransaction(final UUID id, final NormalMerchant merchant, final Double amount,
+								final TransactionStatusEnum status, final String customerEmail,
+								final String customerPhone, final Transaction reference) {
 		super(id, merchant, amount, status, customerEmail, customerPhone, reference);
 	}
 }
