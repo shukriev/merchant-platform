@@ -1,7 +1,6 @@
 package com.shukriev.merchantplatform.model.merchant;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum ActiveInactiveStatusEnum {
 	ACTIVE("Active"), INACTIVE("Inactive");
@@ -9,11 +8,6 @@ public enum ActiveInactiveStatusEnum {
 
 	ActiveInactiveStatusEnum(String value) {
 		this.value = value;
-	}
-
-	@JsonValue
-	public String getValue() {
-		return value;
 	}
 
 	@JsonCreator

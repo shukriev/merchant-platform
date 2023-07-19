@@ -4,6 +4,7 @@ import com.shukriev.merchantplatform.common.MerchantPlatformIntegrationTest;
 import com.shukriev.merchantplatform.inbound.merchant.MerchantService;
 import com.shukriev.merchantplatform.model.merchant.NormalMerchant;
 import com.shukriev.merchantplatform.model.merchant.admin.AdminMerchant;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,10 @@ class MerchantInitializerTest extends MerchantPlatformIntegrationTest {
 			.withUsername("sa")
 			.withPassword("sa");
 
+	@AfterAll
+	static void afterAll() {
+		postgresqlContainer.stop();
+	}
 	@DynamicPropertySource
 	private static void setProperties(DynamicPropertyRegistry registry) {
 		registry.add("spring.datasource.url", postgresqlContainer::getJdbcUrl);

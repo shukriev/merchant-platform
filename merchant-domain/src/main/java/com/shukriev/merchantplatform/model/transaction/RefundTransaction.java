@@ -15,7 +15,8 @@ public final class RefundTransaction extends Transaction {
 	@Override
 	public void validateReferenceTransaction() {
 		if (Objects.isNull(getReference()) || !ChargeTransaction.class.equals(getReference().getClass())) {
-			throw new TransactionValidationException("Refund transaction should contain reference to Charge transaction");
+			throw new TransactionValidationException(
+					"Refund transaction should contain reference to Charge transaction");
 		}
 
 		if (this.getMerchant().getTotalTransactionSum() < this.getAmount()) {
@@ -25,13 +26,15 @@ public final class RefundTransaction extends Transaction {
 
 	@Override
 	public Transaction updateStatus(TransactionStatusEnum status) {
-		return new RefundTransaction(this.getId(), this.getMerchant(), this.getAmount(), status, this.getCustomerEmail(), this.getCustomerPhone(), this.getReference());
+		return new RefundTransaction(this.getId(), this.getMerchant(), this.getAmount(), status,
+				this.getCustomerEmail(), this.getCustomerPhone(), this.getReference());
 	}
 
 	public RefundTransaction() {
 	}
 
-	public RefundTransaction(UUID id, NormalMerchant merchant, Double amount, TransactionStatusEnum status, String customerEmail, String customerPhone, Transaction reference) {
+	public RefundTransaction(UUID id, NormalMerchant merchant, Double amount, TransactionStatusEnum status,
+							 String customerEmail, String customerPhone, Transaction reference) {
 		super(id, merchant, amount, status, customerEmail, customerPhone, reference);
 	}
 }

@@ -5,6 +5,7 @@ import com.shukriev.merchantplatform.inbound.merchant.MerchantService;
 import com.shukriev.merchantplatform.model.merchant.ActiveInactiveStatusEnum;
 import com.shukriev.merchantplatform.model.merchant.factory.MerchantFactory;
 import com.shukriev.merchantplatform.model.merchant.factory.MerchantType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +18,7 @@ import java.util.Objects;
 public class MerchantInitializer implements CommandLineRunner {
 	private final MerchantService merchantService;
 
+	@Autowired
 	public MerchantInitializer(final MerchantService merchantService) {
 		this.merchantService = merchantService;
 	}

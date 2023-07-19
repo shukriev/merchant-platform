@@ -26,7 +26,7 @@ public final class MerchantData {
 	);
 
 	public static final NormalMerchant badMerchantWithWrongTransactionSum = new NormalMerchant(
-			"some@",
+			"some@m.com",
 			"some_name",
 			"some_password",
 			ActiveInactiveStatusEnum.ACTIVE,

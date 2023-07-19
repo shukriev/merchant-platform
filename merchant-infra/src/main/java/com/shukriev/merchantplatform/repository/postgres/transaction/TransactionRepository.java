@@ -18,12 +18,16 @@ public interface TransactionRepository extends CrudRepository<Transaction, UUID>
 	@Modifying
 	@Query("delete from Transaction t where t.createdAt < ?1")
 	void deleteByCreatedAtBefore(LocalDateTime createdAt);
+
 	@Transactional
 	@Modifying
 	@Query("""
-			update Transaction t set t.id = :id, t.merchant = :merchant, t.amount = :amount, t.status = :status, t.customerEmail = :customerEmail, t.customerPhone = :customerPhone, t.reference = :reference
+			update Transaction t set t.id = :id, t.merchant = :merchant, t.amount = :amount, t.status = :status,\s
+			t.customerEmail = :customerEmail, t.customerPhone = :customerPhone, t.reference = :reference
 			where t.id = :id""")
-	void update(@Param("id") UUID id, @Param("merchant") NormalMerchant merchant, @Param("amount") Double amount, @Param("status") TransactionStatusEnum status, @Param("customerEmail") String customerEmail, @Param("customerPhone") String customerPhone, @Param("reference") Transaction reference);
+	void update(@Param("id") UUID id, @Param("merchant") NormalMerchant merchant, @Param("amount") Double amount,
+				@Param("status") TransactionStatusEnum status, @Param("customerEmail") String customerEmail,
+				@Param("customerPhone") String customerPhone, @Param("reference") Transaction reference);
 
 	Set<Transaction> findByMerchant_Id(UUID id);
 }

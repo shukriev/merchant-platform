@@ -1,6 +1,7 @@
 package com.shukriev.merchantplatform.cron;
 
 import com.shukriev.merchantplatform.inbound.transaction.TransactionService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 public class TransactionCron {
 	private final TransactionService transactionService;
 
+	@Autowired
 	public TransactionCron(final TransactionService transactionService) {
 		this.transactionService = transactionService;
 	}
