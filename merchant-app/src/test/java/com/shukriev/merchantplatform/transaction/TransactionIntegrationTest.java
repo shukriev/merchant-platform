@@ -1,6 +1,7 @@
 package com.shukriev.merchantplatform.transaction;
 
 import com.shukriev.merchantplatform.common.MerchantPlatformIntegrationTest;
+import com.shukriev.merchantplatform.controller.authentication.dto.SignInRequest;
 import com.shukriev.merchantplatform.controller.transaction.dto.CreateTransactionDTO;
 import com.shukriev.merchantplatform.controller.transaction.dto.DetailedTransactionDTO;
 import com.shukriev.merchantplatform.inbound.merchant.MerchantService;
@@ -9,6 +10,7 @@ import com.shukriev.merchantplatform.model.merchant.NormalMerchant;
 import com.shukriev.merchantplatform.model.transaction.TransactionStatusEnum;
 import com.shukriev.merchantplatform.model.transaction.factory.TransactionFactory;
 import com.shukriev.merchantplatform.model.transaction.factory.TransactionType;
+import com.shukriev.merchantplatform.service.security.AuthenticationService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,6 +27,7 @@ import static com.shukriev.merchantplatform.common.MerchantPlatformIntegrationTe
 import static io.restassured.RestAssured.given;
 
 class TransactionIntegrationTest extends MerchantPlatformIntegrationTest {
+
 	@Container
 	private static final PostgreSQLContainer<?> postgresqlContainer = new PostgreSQLContainer<>("postgres:11.1")
 			.withDatabaseName("test")
@@ -49,14 +52,19 @@ class TransactionIntegrationTest extends MerchantPlatformIntegrationTest {
 	@Autowired
 	private TransactionService transactionService;
 
+	@Autowired
+	private AuthenticationService authenticationService;
+
 	@Test
 	void shouldCreateAuthorizeTransactionSuccessfullyTest() {
 		final var createdMerchant = (NormalMerchant) merchantService.createMerchant(merchant);
 		final var transactionToCreate = TransactionData.getCreateTransactionDTO(TransactionType.AUTHORIZE, createdMerchant);
 
+		final var token = authenticationService.signIn(
+				new SignInRequest(createdMerchant.getEmail(), "12345")).token();
 		//when
 		final var response = given()
-				.header("Authorization", "Bearer " + BEARER_TOKEN)
+				.header("Authorization", "Bearer " + token)
 				.body(transactionToCreate)
 				.accept("application/json")
 				.contentType("application/json")
@@ -106,9 +114,12 @@ class TransactionIntegrationTest extends MerchantPlatformIntegrationTest {
 				"+359123123123",
 				authorizeTransaction.getId());
 
+		final var token = authenticationService.signIn(
+				new SignInRequest(createdMerchant.getEmail(), "12345")).token();
+
 		//when
 		final var response = given()
-				.header("Authorization", "Bearer " + BEARER_TOKEN)
+				.header("Authorization", "Bearer " + token)
 				.body(chargeTransactionToCreate)
 				.accept("application/json")
 				.contentType("application/json")
@@ -152,9 +163,12 @@ class TransactionIntegrationTest extends MerchantPlatformIntegrationTest {
 				"+359123123123",
 				authorizeTransaction.getId());
 
+		final var token = authenticationService.signIn(
+				new SignInRequest(createdMerchant.getEmail(), "12345")).token();
+
 		//when
 		final var response = given()
-				.header("Authorization", "Bearer " + BEARER_TOKEN)
+				.header("Authorization", "Bearer " + token)
 				.body(chargeTransactionToCreate)
 				.accept("application/json")
 				.contentType("application/json")
@@ -187,9 +201,11 @@ class TransactionIntegrationTest extends MerchantPlatformIntegrationTest {
 				"+359123123123",
 				null);
 
+		final var token = authenticationService.signIn(
+				new SignInRequest(createdMerchant.getEmail(), "12345")).token();
 		//when
 		final var response = given()
-				.header("Authorization", "Bearer " + BEARER_TOKEN)
+				.header("Authorization", "Bearer " + token)
 				.body(chargeTransactionToCreate)
 				.accept("application/json")
 				.contentType("application/json")
@@ -226,9 +242,11 @@ class TransactionIntegrationTest extends MerchantPlatformIntegrationTest {
 				"+359123123123",
 				authorizeTransaction.getId());
 
+		final var token = authenticationService.signIn(
+				new SignInRequest(createdMerchant.getEmail(), "12345")).token();
 		//when
 		final var response = given()
-				.header("Authorization", "Bearer " + BEARER_TOKEN)
+				.header("Authorization", "Bearer " + token)
 				.body(reversalTransactionToCreate)
 				.accept("application/json")
 				.contentType("application/json")
@@ -260,9 +278,11 @@ class TransactionIntegrationTest extends MerchantPlatformIntegrationTest {
 				"+359123123123",
 				null);
 
+		final var token = authenticationService.signIn(
+				new SignInRequest(createdMerchant.getEmail(), "12345")).token();
 		//when
 		final var response = given()
-				.header("Authorization", "Bearer " + BEARER_TOKEN)
+				.header("Authorization", "Bearer " + token)
 				.body(reversalTransactionToCreate)
 				.accept("application/json")
 				.contentType("application/json")
@@ -310,9 +330,11 @@ class TransactionIntegrationTest extends MerchantPlatformIntegrationTest {
 				"+359123123123",
 				chargeTransactionToCreate.getId());
 
+		final var token = authenticationService.signIn(
+				new SignInRequest(createdMerchant.getEmail(), "12345")).token();
 		//when
 		final var response = given()
-				.header("Authorization", "Bearer " + BEARER_TOKEN)
+				.header("Authorization", "Bearer " + token)
 				.body(refundTransactionToCreate)
 				.accept("application/json")
 				.contentType("application/json")
@@ -372,9 +394,11 @@ class TransactionIntegrationTest extends MerchantPlatformIntegrationTest {
 				"+359123123123",
 				chargeTransactionToCreate.getId());
 
+		final var token = authenticationService.signIn(
+				new SignInRequest(createdMerchant.getEmail(), "12345")).token();
 		//when
 		final var response = given()
-				.header("Authorization", "Bearer " + BEARER_TOKEN)
+				.header("Authorization", "Bearer " + token)
 				.body(refundTransactionToCreate)
 				.accept("application/json")
 				.contentType("application/json")
@@ -434,9 +458,11 @@ class TransactionIntegrationTest extends MerchantPlatformIntegrationTest {
 				"+359123123123",
 				chargeTransactionToCreate.getId());
 
+		final var token = authenticationService.signIn(
+				new SignInRequest(createdMerchant.getEmail(), "12345")).token();
 		//when
 		final var response = given()
-				.header("Authorization", "Bearer " + BEARER_TOKEN)
+				.header("Authorization", "Bearer " + token)
 				.body(refundTransactionToCreate)
 				.accept("application/json")
 				.contentType("application/json")
@@ -496,9 +522,11 @@ class TransactionIntegrationTest extends MerchantPlatformIntegrationTest {
 				"+359123123123",
 				chargeTransactionToCreate.getId());
 
+		final var token = authenticationService.signIn(
+				new SignInRequest(createdMerchant.getEmail(), "12345")).token();
 		//when
 		final var response = given()
-				.header("Authorization", "Bearer " + BEARER_TOKEN)
+				.header("Authorization", "Bearer " + token)
 				.body(refundTransactionToCreate)
 				.accept("application/json")
 				.contentType("application/json")

@@ -1,9 +1,11 @@
 package com.shukriev.merchantplatform.merchant;
 
 import com.shukriev.merchantplatform.common.MerchantPlatformIntegrationTest;
+import com.shukriev.merchantplatform.controller.authentication.dto.SignInRequest;
 import com.shukriev.merchantplatform.inbound.merchant.MerchantService;
 import com.shukriev.merchantplatform.model.merchant.ActiveInactiveStatusEnum;
 import com.shukriev.merchantplatform.model.merchant.NormalMerchant;
+import com.shukriev.merchantplatform.service.security.AuthenticationService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,6 +21,10 @@ import static com.shukriev.merchantplatform.common.MerchantPlatformIntegrationTe
 import static io.restassured.RestAssured.given;
 
 class MerchantIntegrationTest extends MerchantPlatformIntegrationTest {
+
+	@Autowired
+	private AuthenticationService authenticationService;
+
 	@Container
 	private static final PostgreSQLContainer<?> postgresqlContainer = new PostgreSQLContainer<>("postgres:11.1")
 			.withDatabaseName("test")
@@ -44,11 +50,13 @@ class MerchantIntegrationTest extends MerchantPlatformIntegrationTest {
 	void shouldReturnMerchantsSuccessfullyTest() {
 		final var createdMerchant = (NormalMerchant) merchantService.createMerchant(merchant);
 
+		final var token = authenticationService.signIn(
+				new SignInRequest(createdMerchant.getEmail(), "12345")).token();
 		//when
 		final var response = given()
 				.accept("application/json")
 				.contentType("application/json")
-				.header("Authorization", "Bearer " + BEARER_TOKEN)
+				.header("Authorization", "Bearer " + token)
 				.when()
 				.get("/merchants")
 				.then()
@@ -72,13 +80,15 @@ class MerchantIntegrationTest extends MerchantPlatformIntegrationTest {
 	@Test
 	void shouldReturnMerchantByIdSuccessfullyTest() {
 		final var createdMerchant = merchantService.createMerchant(merchant);
+		final var token = authenticationService.signIn(
+				new SignInRequest(createdMerchant.getEmail(), "12345")).token();
 
 		//when
 		final var response = given()
 				.pathParam("id", createdMerchant.getId())
 				.accept("application/json")
 				.contentType("application/json")
-				.header("Authorization", "Bearer " + BEARER_TOKEN)
+				.header("Authorization", "Bearer " + token)
 				.when()
 				.get("/merchants/{id}")
 				.then()
@@ -93,13 +103,15 @@ class MerchantIntegrationTest extends MerchantPlatformIntegrationTest {
 
 	@Test
 	void shouldFailMerchantByIdDueToMissingParamTest() {
-		merchantService.createMerchant(merchant);
+		final var createdMerchant = merchantService.createMerchant(merchant);
+		final var token = authenticationService.signIn(
+				new SignInRequest(createdMerchant.getEmail(), "12345")).token();
 
 		//when
 		final var response = given()
 				.accept("application/json")
 				.contentType("application/json")
-				.header("Authorization", "Bearer " + BEARER_TOKEN)
+				.header("Authorization", "Bearer " + token)
 				.when()
 				.get("/merchants/null");
 
@@ -111,6 +123,8 @@ class MerchantIntegrationTest extends MerchantPlatformIntegrationTest {
 	@Test
 	void shouldReturnUpdatedMerchantSuccessfullyTest() {
 		final var createdMerchant = (NormalMerchant) merchantService.createMerchant(merchant);
+		final var token = authenticationService.signIn(
+				new SignInRequest(createdMerchant.getEmail(), "12345")).token();
 
 		final var merchantToBeUpdated = new NormalMerchant(
 				createdMerchant.getId(),
@@ -122,7 +136,7 @@ class MerchantIntegrationTest extends MerchantPlatformIntegrationTest {
 				createdMerchant.getTotalTransactionSum());
 		//when
 		final var response = given()
-				.header("Authorization", "Bearer " + BEARER_TOKEN)
+				.header("Authorization", "Bearer " + token)
 				.pathParam("id", createdMerchant.getId())
 				.body(merchantToBeUpdated)
 				.accept("application/json")
@@ -142,6 +156,8 @@ class MerchantIntegrationTest extends MerchantPlatformIntegrationTest {
 	@Test
 	void shouldFailUpdatedMerchantDueToNonMatchingTest() {
 		final var createdMerchant = (NormalMerchant) merchantService.createMerchant(merchant);
+		final var token = authenticationService.signIn(
+				new SignInRequest(createdMerchant.getEmail(), "12345")).token();
 
 		final var merchantToBeUpdated = new NormalMerchant(
 				UUID.randomUUID(),
@@ -153,7 +169,7 @@ class MerchantIntegrationTest extends MerchantPlatformIntegrationTest {
 				createdMerchant.getTotalTransactionSum());
 		//when
 		final var response = given()
-				.header("Authorization", "Bearer " + BEARER_TOKEN)
+				.header("Authorization", "Bearer " + token)
 				.pathParam("id", createdMerchant.getId())
 				.body(merchantToBeUpdated)
 				.accept("application/json")
@@ -172,11 +188,13 @@ class MerchantIntegrationTest extends MerchantPlatformIntegrationTest {
 	@Test
 	void shouldDeleteMerchantSuccessfullyTest() {
 		final var createdMerchant = merchantService.createMerchant(merchant);
+		final var token = authenticationService.signIn(
+				new SignInRequest(createdMerchant.getEmail(), "12345")).token();
 
 		//when
 		final var response = given()
 				.pathParam("id", createdMerchant.getId())
-				.header("Authorization", "Bearer " + BEARER_TOKEN)
+				.header("Authorization", "Bearer " + token)
 				.accept("application/json")
 				.contentType("application/json")
 				.when()

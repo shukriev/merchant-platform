@@ -68,6 +68,14 @@ public abstract class Merchant {
 		return status;
 	}
 
+	public String role() {
+		final var discriminatorValue = getClass().getAnnotation(DiscriminatorValue.class);
+		if (discriminatorValue != null) {
+			return discriminatorValue.value();
+		}
+		return null;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) {

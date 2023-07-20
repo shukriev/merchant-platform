@@ -24,8 +24,6 @@ import java.util.List;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = {MerchantPlatformApplication.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class MerchantPlatformIntegrationTest {
-	protected static final String BEARER_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJGbG9fUHJvc2FjY282QHlhaG9vLmNvb" +
-			"SIsImlhdCI6MTY4OTgxODgwOCwiZXhwIjoxNjg5ODIwMjQ4fQ.SwsfGectEdJf4rapfdVQI6iFxJfTa4SiZsIMgO7h67Y";
 	@LocalServerPort
 	int port;
 
@@ -65,7 +63,7 @@ public class MerchantPlatformIntegrationTest {
 		public static final NormalMerchant merchant = new NormalMerchant(
 				"Flo_Prosacco6@yahoo.com",
 				"some_name",
-				"$2a$12$9WTyzcN3vlOb6vb26tE24eGPlI4b66PS/BrKxyJ8aSjWF7ma7gyHq",
+				"$2a$12$9WTyzcN3vlOb6vb26tE24eGPlI4b66PS/BrKxyJ8aSjWF7ma7gyHq", //Decoded password 12345
 				ActiveInactiveStatusEnum.ACTIVE,
 				"some_description",
 				1.0
@@ -74,7 +72,7 @@ public class MerchantPlatformIntegrationTest {
 		public static final NormalMerchant defaultMerchant = new NormalMerchant(
 				"Flo_Prosacco6@yahoo.com",
 				"some_name",
-				"$2a$12$9WTyzcN3vlOb6vb26tE24eGPlI4b66PS/BrKxyJ8aSjWF7ma7gyHq",
+				"$2a$12$9WTyzcN3vlOb6vb26tE24eGPlI4b66PS/BrKxyJ8aSjWF7ma7gyHq", //Decoded password 12345
 				ActiveInactiveStatusEnum.ACTIVE,
 				"some_description",
 				0.0
