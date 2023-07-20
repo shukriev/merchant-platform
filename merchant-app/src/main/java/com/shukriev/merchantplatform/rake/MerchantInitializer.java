@@ -44,6 +44,8 @@ public class MerchantInitializer implements CommandLineRunner {
 						final var status = ActiveInactiveStatusEnum.fromValue(fields[4].trim());
 						final var description = fields[5].trim();
 						final var totalTransactionSum = Double.valueOf(fields[6].trim());
+						//TODO the rake task will be creating the users everytime that we run the application
+						//Might require fixing the functionality depending on the requirements
 						merchantService.createMerchant(MerchantFactory.getMerchant(
 								null,
 								email,

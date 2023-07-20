@@ -3,6 +3,7 @@ package com.shukriev.merchantplatform.adapter.merchant;
 import com.shukriev.merchantplatform.MerchantInfraMain;
 import com.shukriev.merchantplatform.common.MerchantPlatformIntegrationTest;
 import com.shukriev.merchantplatform.model.merchant.ActiveInactiveStatusEnum;
+import com.shukriev.merchantplatform.model.merchant.Merchant;
 import com.shukriev.merchantplatform.model.merchant.NormalMerchant;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -96,6 +97,23 @@ class MerchantProviderTest extends MerchantPlatformIntegrationTest {
 		final var selectedMerchants = merchantProvider.getMerchants();
 		Assertions.assertNotNull(selectedMerchants);
 		Assertions.assertEquals(2, selectedMerchants.size());
+	}
+
+	@Test
+	void shouldReturnMerchantByEmailSuccessfully() {
+		final var createdMerchant = merchantProvider.createMerchant(merchant);
+		final var returnedMerchant = merchantProvider.getByEmail(merchant.getEmail());
+
+		Assertions.assertNotNull(returnedMerchant);
+		Assertions.assertEquals(createdMerchant.getId(), returnedMerchant.map(Merchant::getId).orElseThrow());
+	}
+
+	@Test
+	void shouldFailReturningMerchantByEmail() {
+		final var returnedMerchant = merchantProvider.getByEmail("blablabla");
+
+		Assertions.assertNotNull(returnedMerchant);
+		Assertions.assertTrue(returnedMerchant.isEmpty());
 	}
 
 	//TODO implement some more tests

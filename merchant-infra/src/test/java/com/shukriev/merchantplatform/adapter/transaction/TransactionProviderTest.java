@@ -1,7 +1,7 @@
 package com.shukriev.merchantplatform.adapter.transaction;
 
-import com.shukriev.merchantplatform.MerchantInfraMain;
 import com.shukriev.merchantplatform.adapter.merchant.MerchantProviderImpl;
+import com.shukriev.merchantplatform.MerchantInfraMain;
 import com.shukriev.merchantplatform.common.MerchantPlatformIntegrationTest;
 import com.shukriev.merchantplatform.model.merchant.NormalMerchant;
 import com.shukriev.merchantplatform.model.transaction.RefundTransaction;

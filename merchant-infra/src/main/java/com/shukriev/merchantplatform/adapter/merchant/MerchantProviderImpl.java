@@ -1,5 +1,6 @@
 package com.shukriev.merchantplatform.adapter.merchant;
 
+import com.shukriev.merchantplatform.model.merchant.ActiveInactiveStatusEnum;
 import com.shukriev.merchantplatform.model.merchant.Merchant;
 import com.shukriev.merchantplatform.outbound.merchant.MerchantProvider;
 import com.shukriev.merchantplatform.repository.postgres.merchant.MerchantRepository;
@@ -50,5 +51,10 @@ public class MerchantProviderImpl implements MerchantProvider {
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public Optional<Merchant> getByEmail(String email) {
+		return merchantRepository.findByEmailAndStatus(email, ActiveInactiveStatusEnum.ACTIVE);
 	}
 }

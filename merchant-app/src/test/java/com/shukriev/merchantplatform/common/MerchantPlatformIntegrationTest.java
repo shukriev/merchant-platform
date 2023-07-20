@@ -24,7 +24,8 @@ import java.util.List;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = {MerchantPlatformApplication.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class MerchantPlatformIntegrationTest {
-
+	protected static final String BEARER_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJGbG9fUHJvc2FjY282QHlhaG9vLmNvb" +
+			"SIsImlhdCI6MTY4OTgxODgwOCwiZXhwIjoxNjg5ODIwMjQ4fQ.SwsfGectEdJf4rapfdVQI6iFxJfTa4SiZsIMgO7h67Y";
 	@LocalServerPort
 	int port;
 
@@ -62,18 +63,18 @@ public class MerchantPlatformIntegrationTest {
 
 	public static class MerchantData {
 		public static final NormalMerchant merchant = new NormalMerchant(
-				"some@mail.com",
+				"Flo_Prosacco6@yahoo.com",
 				"some_name",
-				"some_password",
+				"$2a$12$9WTyzcN3vlOb6vb26tE24eGPlI4b66PS/BrKxyJ8aSjWF7ma7gyHq",
 				ActiveInactiveStatusEnum.ACTIVE,
 				"some_description",
 				1.0
 		);
 
 		public static final NormalMerchant defaultMerchant = new NormalMerchant(
-				"some@mail.com",
+				"Flo_Prosacco6@yahoo.com",
 				"some_name",
-				"some_password",
+				"$2a$12$9WTyzcN3vlOb6vb26tE24eGPlI4b66PS/BrKxyJ8aSjWF7ma7gyHq",
 				ActiveInactiveStatusEnum.ACTIVE,
 				"some_description",
 				0.0
@@ -87,7 +88,7 @@ public class MerchantPlatformIntegrationTest {
 					merchant.getId(),
 					10.0,
 					TransactionStatusEnum.APPROVED,
-					"some@email.com",
+					"Flo_Prosacco6@yahoo.com",
 					"+359123123123",
 					null);
 		}

@@ -7,10 +7,10 @@
         <groupId>com.shukriev.merchant</groupId>
         <artifactId>merchant-platform</artifactId>
         <version>1.0-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>merchant-domain</artifactId>
+    <packaging>jar</packaging>
 
     <properties>
         <maven.compiler.source>19</maven.compiler.source>
