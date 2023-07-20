@@ -1,10 +1,10 @@
 package com.shukriev.merchantplatform.inbound.transaction;
 
-import com.shukriev.merchantplatform.common.MerchantData;
 import com.shukriev.merchantplatform.common.TransactionData;
 import com.shukriev.merchantplatform.exception.merchant.MerchantInactiveException;
-import com.shukriev.merchantplatform.exception.transaction.TransactionNotFoundException;
 import com.shukriev.merchantplatform.model.transaction.AuthorizeTransaction;
+import com.shukriev.merchantplatform.common.MerchantData;
+import com.shukriev.merchantplatform.exception.transaction.TransactionNotFoundException;
 import com.shukriev.merchantplatform.model.transaction.TransactionStatusEnum;
 import com.shukriev.merchantplatform.outbound.merchant.MerchantProvider;
 import com.shukriev.merchantplatform.outbound.transaction.TransactionProvider;

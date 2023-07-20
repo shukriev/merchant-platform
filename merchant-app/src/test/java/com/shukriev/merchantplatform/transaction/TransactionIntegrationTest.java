@@ -56,6 +56,7 @@ class TransactionIntegrationTest extends MerchantPlatformIntegrationTest {
 
 		//when
 		final var response = given()
+				.header("Authorization", "Bearer " + BEARER_TOKEN)
 				.body(transactionToCreate)
 				.accept("application/json")
 				.contentType("application/json")
@@ -107,6 +108,7 @@ class TransactionIntegrationTest extends MerchantPlatformIntegrationTest {
 
 		//when
 		final var response = given()
+				.header("Authorization", "Bearer " + BEARER_TOKEN)
 				.body(chargeTransactionToCreate)
 				.accept("application/json")
 				.contentType("application/json")
@@ -152,6 +154,7 @@ class TransactionIntegrationTest extends MerchantPlatformIntegrationTest {
 
 		//when
 		final var response = given()
+				.header("Authorization", "Bearer " + BEARER_TOKEN)
 				.body(chargeTransactionToCreate)
 				.accept("application/json")
 				.contentType("application/json")
@@ -186,6 +189,7 @@ class TransactionIntegrationTest extends MerchantPlatformIntegrationTest {
 
 		//when
 		final var response = given()
+				.header("Authorization", "Bearer " + BEARER_TOKEN)
 				.body(chargeTransactionToCreate)
 				.accept("application/json")
 				.contentType("application/json")
@@ -224,6 +228,7 @@ class TransactionIntegrationTest extends MerchantPlatformIntegrationTest {
 
 		//when
 		final var response = given()
+				.header("Authorization", "Bearer " + BEARER_TOKEN)
 				.body(reversalTransactionToCreate)
 				.accept("application/json")
 				.contentType("application/json")
@@ -257,6 +262,7 @@ class TransactionIntegrationTest extends MerchantPlatformIntegrationTest {
 
 		//when
 		final var response = given()
+				.header("Authorization", "Bearer " + BEARER_TOKEN)
 				.body(reversalTransactionToCreate)
 				.accept("application/json")
 				.contentType("application/json")
@@ -306,6 +312,7 @@ class TransactionIntegrationTest extends MerchantPlatformIntegrationTest {
 
 		//when
 		final var response = given()
+				.header("Authorization", "Bearer " + BEARER_TOKEN)
 				.body(refundTransactionToCreate)
 				.accept("application/json")
 				.contentType("application/json")
@@ -367,6 +374,7 @@ class TransactionIntegrationTest extends MerchantPlatformIntegrationTest {
 
 		//when
 		final var response = given()
+				.header("Authorization", "Bearer " + BEARER_TOKEN)
 				.body(refundTransactionToCreate)
 				.accept("application/json")
 				.contentType("application/json")
@@ -428,6 +436,7 @@ class TransactionIntegrationTest extends MerchantPlatformIntegrationTest {
 
 		//when
 		final var response = given()
+				.header("Authorization", "Bearer " + BEARER_TOKEN)
 				.body(refundTransactionToCreate)
 				.accept("application/json")
 				.contentType("application/json")
@@ -489,6 +498,7 @@ class TransactionIntegrationTest extends MerchantPlatformIntegrationTest {
 
 		//when
 		final var response = given()
+				.header("Authorization", "Bearer " + BEARER_TOKEN)
 				.body(refundTransactionToCreate)
 				.accept("application/json")
 				.contentType("application/json")

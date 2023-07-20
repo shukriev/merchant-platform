@@ -21,4 +21,7 @@ public interface MerchantProvider {
 	Merchant createMerchant(final Merchant merchant);
 
 	boolean deleteMerchant(final UUID id);
+
+	@NotNull
+	Optional<Merchant> getByEmail(String email);
 }

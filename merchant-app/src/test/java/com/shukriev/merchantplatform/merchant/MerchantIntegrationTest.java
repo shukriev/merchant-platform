@@ -48,6 +48,7 @@ class MerchantIntegrationTest extends MerchantPlatformIntegrationTest {
 		final var response = given()
 				.accept("application/json")
 				.contentType("application/json")
+				.header("Authorization", "Bearer " + BEARER_TOKEN)
 				.when()
 				.get("/merchants")
 				.then()
@@ -77,6 +78,7 @@ class MerchantIntegrationTest extends MerchantPlatformIntegrationTest {
 				.pathParam("id", createdMerchant.getId())
 				.accept("application/json")
 				.contentType("application/json")
+				.header("Authorization", "Bearer " + BEARER_TOKEN)
 				.when()
 				.get("/merchants/{id}")
 				.then()
@@ -91,10 +93,13 @@ class MerchantIntegrationTest extends MerchantPlatformIntegrationTest {
 
 	@Test
 	void shouldFailMerchantByIdDueToMissingParamTest() {
+		merchantService.createMerchant(merchant);
+
 		//when
 		final var response = given()
 				.accept("application/json")
 				.contentType("application/json")
+				.header("Authorization", "Bearer " + BEARER_TOKEN)
 				.when()
 				.get("/merchants/null");
 
@@ -117,6 +122,7 @@ class MerchantIntegrationTest extends MerchantPlatformIntegrationTest {
 				createdMerchant.getTotalTransactionSum());
 		//when
 		final var response = given()
+				.header("Authorization", "Bearer " + BEARER_TOKEN)
 				.pathParam("id", createdMerchant.getId())
 				.body(merchantToBeUpdated)
 				.accept("application/json")
@@ -147,6 +153,7 @@ class MerchantIntegrationTest extends MerchantPlatformIntegrationTest {
 				createdMerchant.getTotalTransactionSum());
 		//when
 		final var response = given()
+				.header("Authorization", "Bearer " + BEARER_TOKEN)
 				.pathParam("id", createdMerchant.getId())
 				.body(merchantToBeUpdated)
 				.accept("application/json")
@@ -169,6 +176,7 @@ class MerchantIntegrationTest extends MerchantPlatformIntegrationTest {
 		//when
 		final var response = given()
 				.pathParam("id", createdMerchant.getId())
+				.header("Authorization", "Bearer " + BEARER_TOKEN)
 				.accept("application/json")
 				.contentType("application/json")
 				.when()

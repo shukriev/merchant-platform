@@ -1,9 +1,9 @@
 package com.shukriev.merchantplatform.inbound.merchant;
 
-import com.shukriev.merchantplatform.exception.merchant.MerchantNotFoundException;
 import com.shukriev.merchantplatform.model.merchant.ActiveInactiveStatusEnum;
 import com.shukriev.merchantplatform.model.merchant.Merchant;
 import com.shukriev.merchantplatform.model.merchant.NormalMerchant;
+import com.shukriev.merchantplatform.exception.merchant.MerchantNotFoundException;
 import com.shukriev.merchantplatform.outbound.merchant.MerchantProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -118,5 +118,23 @@ class MerchantServiceTest {
 		// when
 		final var isMerchantDeleted = merchantService.deleteMerchant(uuid);
 		Assertions.assertTrue(isMerchantDeleted);
+	}
+
+	@Test
+	void shouldReturnMerchantByEmailSuccessfully() {
+		final var merchant = new NormalMerchant(
+				"some@mail.com",
+				"some_name",
+				"some_password",
+				ActiveInactiveStatusEnum.ACTIVE,
+				"some_description",
+				1.0d);
+
+		// given
+		when(merchantProvider.getByEmail(merchant.getEmail())).thenReturn(Optional.of(merchant));
+		// when
+		final var result = merchantService.getByEmail(merchant.getEmail());
+		// then
+		Assertions.assertEquals(Optional.of(merchant), result);
 	}
 }
